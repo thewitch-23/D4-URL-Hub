@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Useful Links Aggregator</title>
+    <title>D4 URL Hub</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -38,8 +38,8 @@
 <body>
 
     <h1>Useful Links Aggregator</h1>
-    <p>Filter by platform:</p>
-    <input type="text" id="filterInput" onkeyup="filterTable()" placeholder="Search for platforms..">
+    <p>Filter by platform or description:</p>
+    <input type="text" id="filterInput" onkeyup="filterTable()" placeholder="Search for platforms or descriptions..">
 
     <table id="linksTable">
         <thead>
@@ -55,12 +55,12 @@
     </table>
 
     <script>
-        // Array of URL data: [Platform, URL, Description]
+        // Array of URL data: [Platform, URL, Description, Displayed Link Title]
         const urlData = [
-            ['M365', 'https://github.com/iandday/o365AuditParser', 'Process M365 Audit Logs into a useable form'],
-            ['M365', 'https://microsoft-365-extractor-suite.readthedocs.io/en/latest/index.html', 'Powershell tool designed to streamline the process of collecting all necessary data and information from various sources within Microsoft'],
-            ['iOS', 'https://github.com/prosch88/UFADE', 'Universal Forensic Apple Device Extractor'],
-            ['Unix-Like System', 'https://github.com/tclahr/uac', 'Automates the collection of artifacts from Unix-like systems, including AIX, ESXi, FreeBSD, Linux, macOS, NetBSD, NetScaler, OpenBSD and Solaris.']
+            ['M365', 'https://github.com/iandday/o365AuditParser', 'Process M365 Audit Logs into a useable form', 'M365 UAL Parser'],
+            ['M365', 'https://microsoft-365-extractor-suite.readthedocs.io/en/latest/index.html', 'Powershell tool designed to streamline the process of collecting all necessary data and information from various sources within Microsoft', 'Microsoft Extractor Suite'],
+            ['iOS', 'https://github.com/prosch88/UFADE', 'Universal Forensic Apple Device Extractor', 'UFADE'],
+            ['Unix-Like System', 'https://github.com/tclahr/uac', 'Automates the collection of artifacts from Unix-like systems, including AIX, ESXi, FreeBSD, Linux, macOS, NetBSD, NetScaler, OpenBSD and Solaris.', 'UAC']
         ];
 
         // Function to populate the table dynamically
@@ -78,7 +78,7 @@
                 const urlCell = document.createElement('td');
                 const linkElement = document.createElement('a');
                 linkElement.href = link[1];
-                linkElement.textContent = link[1];
+                linkElement.textContent = link[3];  // Display the title (short URL)
                 linkElement.target = '_blank';
                 urlCell.appendChild(linkElement);
 
@@ -93,7 +93,7 @@
             });
         }
 
-        // Function to filter the table based on input
+        // Function to filter the table based on input (platform or description)
         function filterTable() {
             const input = document.getElementById('filterInput');
             const filter = input.value.toUpperCase();
@@ -103,9 +103,18 @@
             for (let i = 1; i < rows.length; i++) {
                 const cells = rows[i].getElementsByTagName('td');
                 const platformCell = cells[0];
-                if (platformCell) {
+                const descriptionCell = cells[2];
+
+                if (platformCell && descriptionCell) {
                     const platformText = platformCell.textContent || platformCell.innerText;
-                    rows[i].style.display = platformText.toUpperCase().indexOf(filter) > -1 ? '' : 'none';
+                    const descriptionText = descriptionCell.textContent || descriptionCell.innerText;
+
+                    // Check if the filter matches either the platform or description
+                    if (platformText.toUpperCase().indexOf(filter) > -1 || descriptionText.toUpperCase().indexOf(filter) > -1) {
+                        rows[i].style.display = '';
+                    } else {
+                        rows[i].style.display = 'none';
+                    }
                 }
             }
         }
