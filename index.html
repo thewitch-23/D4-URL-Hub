@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Useful Links Aggregator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f7f7f7;
+        }
+        h1 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        #filterInput {
+            padding: 10px;
+            width: 100%;
+            margin: 20px 0;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Useful Links Aggregator</h1>
+    <p>Filter by platform:</p>
+    <input type="text" id="filterInput" onkeyup="filterTable()" placeholder="Search for platforms..">
+
+    <table id="linksTable">
+        <thead>
+            <tr>
+                <th>Platform</th>
+                <th>URL</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Table rows will be inserted dynamically by JavaScript -->
+        </tbody>
+    </table>
+
+    <script>
+        // Array of URL data: [Platform, URL, Description]
+        const urlData = [
+            ['M365', 'https://github.com/iandday/o365AuditParser', 'Process M365 Audit Logs into a useable form'],
+            ['M365', 'https://microsoft-365-extractor-suite.readthedocs.io/en/latest/index.html', 'Powershell tool designed to streamline the process of collecting all necessary data and information from various sources within Microsoft'],
+            ['iOS', 'https://github.com/prosch88/UFADE', 'Universal Forensic Apple Device Extractor'],
+            ['Unix-Like System', 'https://github.com/tclahr/uac', 'Automates the collection of artifacts from Unix-like systems, including AIX, ESXi, FreeBSD, Linux, macOS, NetBSD, NetScaler, OpenBSD and Solaris.']
+        ];
+
+        // Function to populate the table dynamically
+        function populateTable() {
+            const tableBody = document.getElementById('linksTable').getElementsByTagName('tbody')[0];
+            tableBody.innerHTML = '';  // Clear any existing rows
+
+            // Loop through the data and create rows
+            urlData.forEach(link => {
+                const row = document.createElement('tr');
+
+                const platformCell = document.createElement('td');
+                platformCell.textContent = link[0];
+
+                const urlCell = document.createElement('td');
+                const linkElement = document.createElement('a');
+                linkElement.href = link[1];
+                linkElement.textContent = link[1];
+                linkElement.target = '_blank';
+                urlCell.appendChild(linkElement);
+
+                const descriptionCell = document.createElement('td');
+                descriptionCell.textContent = link[2];
+
+                row.appendChild(platformCell);
+                row.appendChild(urlCell);
+                row.appendChild(descriptionCell);
+
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Function to filter the table based on input
+        function filterTable() {
+            const input = document.getElementById('filterInput');
+            const filter = input.value.toUpperCase();
+            const table = document.getElementById('linksTable');
+            const rows = table.getElementsByTagName('tr');
+
+            for (let i = 1; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName('td');
+                const platformCell = cells[0];
+                if (platformCell) {
+                    const platformText = platformCell.textContent || platformCell.innerText;
+                    rows[i].style.display = platformText.toUpperCase().indexOf(filter) > -1 ? '' : 'none';
+                }
+            }
+        }
+
+        // Populate the table when the page loads
+        window.onload = function() {
+            populateTable();
+        };
+    </script>
+
+</body>
+</html>
