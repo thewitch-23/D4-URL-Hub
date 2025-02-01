@@ -33,8 +33,8 @@
 
         /* Table Styles */
         table {
-            width: 80%;
-            max-width: 1000px;
+            width: 90%; /* Increase the table width */
+            max-width: 1200px; /* Set a maximum width to prevent stretching too far */
             margin-top: 30px;
             border-collapse: collapse;
             background-color: #444444; /* Dark Gray Table Background */
@@ -71,8 +71,8 @@
         /* Filter Input Styling */
         #filterInput {
             padding: 12px;
-            width: 80%;
-            max-width: 600px;
+            width: 90%; /* Increase input width */
+            max-width: 800px; /* Set a max width to prevent stretching too far */
             margin-top: 20px;
             background-color: #555555; /* Dark input background */
             border: 1px solid #666666; /* Light border */
@@ -89,9 +89,9 @@
 </head>
 <body>
 
-    <h1>Useful Links Aggregator</h1>
-    <p>Filter by platform or description:</p>
-    <input type="text" id="filterInput" onkeyup="filterTable()" placeholder="Search for platforms or descriptions..">
+    <h1>D4 URL Hub</h1>
+    <p>Filter by platform, URL name, or description:</p>
+    <input type="text" id="filterInput" onkeyup="filterTable()" placeholder="Search for platforms, URL names, or descriptions..">
 
     <table id="linksTable">
         <thead>
@@ -145,7 +145,7 @@
             });
         }
 
-        // Function to filter the table based on input (platform or description)
+        // Function to filter the table based on input (platform, URL name, or description)
         function filterTable() {
             const input = document.getElementById('filterInput');
             const filter = input.value.toUpperCase();
@@ -155,14 +155,20 @@
             for (let i = 1; i < rows.length; i++) {
                 const cells = rows[i].getElementsByTagName('td');
                 const platformCell = cells[0];
+                const urlCell = cells[1];
                 const descriptionCell = cells[2];
 
-                if (platformCell && descriptionCell) {
+                if (platformCell && descriptionCell && urlCell) {
                     const platformText = platformCell.textContent || platformCell.innerText;
                     const descriptionText = descriptionCell.textContent || descriptionCell.innerText;
+                    const urlText = urlCell.textContent || urlCell.innerText;
 
-                    // Check if the filter matches either the platform or description
-                    if (platformText.toUpperCase().indexOf(filter) > -1 || descriptionText.toUpperCase().indexOf(filter) > -1) {
+                    // Check if the filter matches platform, description, or URL name
+                    if (
+                        platformText.toUpperCase().indexOf(filter) > -1 || 
+                        descriptionText.toUpperCase().indexOf(filter) > -1 || 
+                        urlText.toUpperCase().indexOf(filter) > -1
+                    ) {
                         rows[i].style.display = '';
                     } else {
                         rows[i].style.display = 'none';
