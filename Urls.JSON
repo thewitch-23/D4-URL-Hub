@@ -1,0 +1,26 @@
+[
+    {
+        "platform": "M365",
+        "url": "https://github.com/iandday/o365AuditParser",
+        "description": "Process M365 Audit Logs into a useable form",
+        "title": "M365 UAL Parser"
+    },
+    {
+        "platform": "M365",
+        "url": "https://microsoft-365-extractor-suite.readthedocs.io/en/latest/index.html",
+        "description": "Powershell tool designed to streamline the process of collecting all necessary data and information from various sources within Microsoft",
+        "title": "Microsoft Extractor Suite"
+    },
+    {
+        "platform": "iOS",
+        "url": "https://github.com/prosch88/UFADE",
+        "description": "Universal Forensic Apple Device Extractor",
+        "title": "UFADE"
+    },
+    {
+        "platform": "Unix-Like System",
+        "url": "https://github.com/tclahr/uac",
+        "description": "Automates the collection of artifacts from Unix-like systems, including AIX, ESXi, FreeBSD, Linux, macOS, NetBSD, NetScaler, OpenBSD and Solaris.",
+        "title": "UAC"
+    }
+]
