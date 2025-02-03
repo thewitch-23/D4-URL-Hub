@@ -172,7 +172,7 @@
         // Fetch the URLs from the JSON file
         async function loadURLs() {
             try {
-                const response = await fetch('https://github.com/thewitch-23/D4-URL-Hub/blob/main/Urls.JSON'); // Replace with your actual JSON file URL
+                const response = await fetch('https://raw.githubusercontent.com/thewitch-23/D4-URL-Hub/refs/heads/main/Urls.JSON'); // Replace with your actual JSON file URL
                 const data = await response.json();
 
                 // Assuming the JSON structure has an array of URL objects
