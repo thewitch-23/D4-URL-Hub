@@ -38,7 +38,7 @@
     {
         "platform": "Discord",
         "url": "https://github.com/nulldg/DiscordChatExporterPlus",
-        "description": "Exports Discord chat logs to a file.",
+        "description": "Exports Discord chat logs to a file (HTML, TXT, CSV, or JSON).",
         "title": "DiscordChatExporterPlus"
     }
 ]
