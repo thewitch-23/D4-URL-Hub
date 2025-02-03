@@ -85,6 +85,40 @@
             outline: none;
             border-color: #66ccff; /* Highlight border color on focus */
         }
+
+        /* Form Styling */
+        #urlForm {
+            background-color: #444444;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            max-width: 800px;
+            width: 90%;
+        }
+
+        #urlForm input {
+            padding: 8px;
+            margin: 8px 0;
+            width: 100%;
+            border-radius: 5px;
+            border: 1px solid #666666;
+            background-color: #555555;
+            color: #f1f1f1;
+        }
+
+        #urlForm button {
+            padding: 10px 20px;
+            background-color: #66ccff;
+            border: none;
+            color: #fff;
+            font-size: 1em;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #urlForm button:hover {
+            background-color: #ffcc00;
+        }
     </style>
 </head>
 <body>
@@ -92,6 +126,20 @@
     <h1>D4 URL Hub</h1>
     <p>Filter by platform, URL name, or description:</p>
     <input type="text" id="filterInput" onkeyup="filterTable()" placeholder="Search for platforms, URL names, or descriptions..">
+
+    <!-- Form for adding new URLs -->
+    <div id="urlForm">
+        <h3>Add a New URL</h3>
+        <label for="platform">Platform:</label>
+        <input type="text" id="platform" placeholder="Enter Platform" required><br><br>
+        <label for="url">URL:</label>
+        <input type="url" id="url" placeholder="Enter URL" required><br><br>
+        <label for="description">Description:</label>
+        <input type="text" id="description" placeholder="Enter Description" required><br><br>
+        <label for="title">Link Title:</label>
+        <input type="text" id="title" placeholder="Enter Title" required><br><br>
+        <button onclick="addURL()">Add URL</button>
+    </div>
 
     <table id="linksTable">
         <thead>
@@ -108,7 +156,7 @@
 
     <script>
         // Array of URL data: [Platform, URL, Description, Displayed Link Title]
-        const urlData = [
+        let urlData = [
             ['M365', 'https://github.com/iandday/o365AuditParser', 'Process M365 Audit Logs into a useable form', 'M365 UAL Parser'],
             ['M365', 'https://microsoft-365-extractor-suite.readthedocs.io/en/latest/index.html', 'Powershell tool designed to streamline the process of collecting all necessary data and information from various sources within Microsoft', 'Microsoft Extractor Suite'],
             ['iOS', 'https://github.com/prosch88/UFADE', 'Universal Forensic Apple Device Extractor', 'UFADE'],
@@ -174,6 +222,32 @@
                         rows[i].style.display = 'none';
                     }
                 }
+            }
+        }
+
+        // Function to add a new URL entry
+        function addURL() {
+            // Get values from the form
+            const platform = document.getElementById('platform').value;
+            const url = document.getElementById('url').value;
+            const description = document.getElementById('description').value;
+            const title = document.getElementById('title').value;
+
+            // Validate the inputs
+            if (platform && url && description && title) {
+                // Add the new URL data to the array
+                urlData.push([platform, url, description, title]);
+
+                // Clear the form fields
+                document.getElementById('platform').value = '';
+                document.getElementById('url').value = '';
+                document.getElementById('description').value = '';
+                document.getElementById('title').value = '';
+
+                // Repopulate the table to include the new entry
+                populateTable();
+            } else {
+                alert('Please fill out all fields.');
             }
         }
 
