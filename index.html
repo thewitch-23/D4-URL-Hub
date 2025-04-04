@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    <link EQ: <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
     <title>D4 URL Hub</title>
     <style>
         /* General Styles */
@@ -371,6 +371,8 @@
                 "url": "https://github.com/ydkhatri/MacForensics/tree/master/Deserializer", 
                 "description": "This converts an NSKeyedArchive (NSKA) plist into a normalized, unserialized one, that can be easily read.", 
                 "title": "Deserializer for Plists" 
+nictwo
+
             },
             { 
                 "platform": "Universal", 
@@ -668,7 +670,7 @@
             },
             { 
                 "platform": "Decryption", 
-                "url<%@ include file="/WEB-INF/views/include.jsp" %>": "https://github.com/gchq/CyberChef", 
+                "url": "https://github.com/gchq/CyberChef", 
                 "description": "The Cyber Swiss Army Knife - a web app for encryption, encoding, compression and data analysis", 
                 "title": "CyberChef" 
             },
@@ -890,7 +892,10 @@
             }
         }
 
-        // Populate the table with the hardcoded data
+        // Populate the table immediately after script loads
+        populateTable(urlData);
+
+        // Also keep window.onload as a fallback
         window.onload = function() {
             populateTable(urlData);
         };
