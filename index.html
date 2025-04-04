@@ -191,23 +191,6 @@
             background-color: #66ccff;
         }
 
-        /* Pagination Styling */
-        #pagination {
-            margin-top: 20px;
-            display: flex;
-            gap: 10px;
-        }
-
-        #pagination button {
-            padding: 10px 15px;
-            font-size: 1em;
-        }
-
-        #pagination button:disabled {
-            background-color: #666666;
-            cursor: not-allowed;
-        }
-
         /* Responsive Design */
         @media (max-width: 768px) {
             table {
@@ -242,7 +225,7 @@
     <table id="linksTable" role="grid">
         <thead>
             <tr>
-                <th onclick="sortTable(0)" aria-sort="ascending" tabindex="0" role="columnheader">Platform <i class="fas fa-sort"></i></th>
+                <th onclick="sortTable(0)" aria-sort="ascending" tabindex="0" role="columnheader">Platform <i class="fas fa-sort-up"></i></th>
                 <th onclick="sortTable(1)" aria-sort="none" tabindex="0" role="columnheader">URL <i class="fas fa-sort"></i></th>
                 <th onclick="sortTable(2)" aria-sort="none" tabindex="0" role="columnheader">Description <i class="fas fa-sort"></i></th>
             </tr>
@@ -252,18 +235,15 @@
         </tbody>
     </table>
     <div id="noResults">No results found.</div>
-    <div id="pagination"></div>
 
     <script>
-        // Hardcoded URL data (unchanged - insert your original urlData here)
+        // Hardcoded URL data (insert your original urlData here)
         const urlData = [/* Your original urlData array */];
 
-        const rowsPerPage = 10;
-        let currentPage = 1;
         let filteredData = [...urlData];
         let activeTag = null;
 
-        // Populate table with pagination
+        // Populate table (no pagination)
         function populateTable(data) {
             const tableBody = document.querySelector('#linksTable tbody');
             const noResults = document.getElementById('noResults');
@@ -275,17 +255,12 @@
 
             if (!data || data.length === 0) {
                 noResults.style.display = 'block';
-                updatePagination(0);
                 return;
             }
 
             noResults.style.display = 'none';
-            const start = (currentPage - 1) * rowsPerPage;
-            const end = start + rowsPerPage;
-            const paginatedData = data.slice(start, end);
-
             try {
-                paginatedData.forEach(link => {
+                data.forEach(link => {
                     const row = document.createElement('tr');
 
                     const platformCell = document.createElement('td');
@@ -313,46 +288,11 @@
 
                     tableBody.appendChild(row);
                 });
-                updatePagination(data.length);
             } catch (error) {
                 console.error("Error populating table:", error);
                 noResults.textContent = "Error loading data. Please try again.";
                 noResults.style.display = 'block';
             }
-        }
-
-        // Update pagination controls
-        function updatePagination(totalRows) {
-            const totalPages = Math.ceil(totalRows / rowsPerPage);
-            const pagination = document.getElementById('pagination');
-            pagination.innerHTML = '';
-
-            const prevButton = document.createElement('button');
-            prevButton.innerHTML = '<i class="fas fa-chevron-left"></i> Previous';
-            prevButton.disabled = currentPage === 1;
-            prevButton.onclick = () => {
-                if (currentPage > 1) {
-                    currentPage--;
-                    populateTable(filteredData);
-                }
-            };
-            pagination.appendChild(prevButton);
-
-            const pageInfo = document.createElement('span');
-            pageInfo.textContent = `Page ${currentPage} of ${totalPages || 1}`;
-            pageInfo.style.alignSelf = 'center';
-            pagination.appendChild(pageInfo);
-
-            const nextButton = document.createElement('button');
-            nextButton.innerHTML = 'Next <i class="fas fa-chevron-right"></i>';
-            nextButton.disabled = currentPage === totalPages || totalPages === 0;
-            nextButton.onclick = () => {
-                if (currentPage < totalPages) {
-                    currentPage++;
-                    populateTable(filteredData);
-                }
-            };
-            pagination.appendChild(nextButton);
         }
 
         // Populate category tags
@@ -385,7 +325,6 @@
                 filteredData = urlData.filter(item => item.platform === platform);
             }
             document.getElementById('filterInput').value = '';
-            currentPage = 1;
             populateTable(filteredData);
         }
 
@@ -415,7 +354,6 @@
             });
             activeTag = null;
             document.querySelectorAll('.tag').forEach(tag => tag.classList.remove('active'));
-            currentPage = 1;
             populateTable(filteredData);
         }
 
@@ -429,7 +367,6 @@
             filteredData = [...urlData];
             activeTag = null;
             document.querySelectorAll('.tag').forEach(tag => tag.classList.remove('active'));
-            currentPage = 1;
             populateTable(filteredData);
         }
 
