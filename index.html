@@ -18,6 +18,7 @@
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
+            transition: background 0.3s ease, color 0.3s ease; /* Smooth theme transition */
         }
 
         h1 {
@@ -41,6 +42,14 @@
             gap: 10px;
             justify-content: center;
             margin-bottom: 20px;
+            position: sticky; /* Sticky controls */
+            top: 20px;
+            z-index: 2;
+            background: #333333; /* Match dark mode background */
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s ease; /* Smooth theme transition */
         }
 
         table {
@@ -54,6 +63,7 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             opacity: 0;
             animation: fadeIn 0.5s ease forwards;
+            transition: background-color 0.3s ease; /* Smooth theme transition */
         }
 
         @keyframes fadeIn {
@@ -73,6 +83,7 @@
             position: sticky;
             top: 0;
             z-index: 1;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         th:hover {
@@ -85,10 +96,12 @@
 
         td {
             color: #f5f5f5;
+            transition: color 0.3s ease;
         }
 
         tr:nth-child(even) {
             background-color: #4a4a4a;
+            transition: background-color 0.3s ease;
         }
 
         tr:hover {
@@ -136,6 +149,7 @@
             color: #f5f5f5;
             font-size: 1.1em;
             border-radius: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
         }
 
         #filterInput:focus {
@@ -153,6 +167,7 @@
             cursor: pointer;
             font-size: 1.1em;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
         }
 
         button:hover {
@@ -183,6 +198,55 @@
             background-color: #66ccff;
         }
 
+        /* Light Mode Styles */
+        body.light-mode {
+            background: linear-gradient(135deg, #f5f5f5, #e0e0e0);
+            color: #333;
+        }
+
+        .light-mode .controls {
+            background: #e0e0e0;
+        }
+
+        .light-mode table {
+            background-color: #fff;
+        }
+
+        .light-mode thead th {
+            background-color: #ddd;
+            color: #333;
+        }
+
+        .light-mode tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .light-mode tr:hover {
+            background-color: #eee;
+        }
+
+        .light-mode td {
+            color: #333;
+        }
+
+        .light-mode #filterInput {
+            background-color: #fff;
+            color: #333;
+            border: 1px solid #ccc;
+        }
+
+        .light-mode .tag {
+            background-color: #ddd;
+        }
+
+        .light-mode .tag:hover, .light-mode .tag.active {
+            background-color: #66ccff;
+        }
+
+        .light-mode h1, .light-mode p {
+            color: #333;
+        }
+
         @media (max-width: 768px) {
             table {
                 display: block;
@@ -210,6 +274,7 @@
         <input type="text" id="filterInput" onkeyup="debounceFilter()" placeholder="Search by platform, title, or description..." aria-label="Filter table by platform, title, or description">
         <button id="clearButton" onclick="clearFilter()" aria-label="Clear filter"><i class="fas fa-times"></i> Clear</button>
         <button id="exportButton" onclick="exportToCSV()" aria-label="Export table to CSV"><i class="fas fa-download"></i> Export CSV</button>
+        <button id="themeToggle" onclick="toggleTheme()" aria-label="Toggle dark/light mode"><i class="fas fa-adjust"></i> Toggle Theme</button>
     </div>
     <div id="categoryTags"></div>
 
@@ -1054,6 +1119,21 @@
             link.download = 'D4_URL_Hub.csv';
             link.click();
         }
+
+        // Toggle Dark/Light Mode
+        function toggleTheme() {
+            const body = document.body;
+            body.classList.toggle('light-mode');
+            localStorage.setItem('theme', body.classList.contains('light-mode') ? 'light' : 'dark');
+        }
+
+        // Apply saved theme on load
+        window.onload = function() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-mode');
+            }
+        };
 
         // Initial setup: populate table with full data and tags
         populateTable(urlData); // Show all data immediately
