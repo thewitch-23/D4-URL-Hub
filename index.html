@@ -923,11 +923,15 @@
             }
         }
 
-        // Populate category tags
+        // Populate category tags with split platforms
         function populateTags() {
             const tagsContainer = document.getElementById('categoryTags');
-            const platforms = [...new Set(urlData.map(item => item.platform))];
-            platforms.forEach(platform => {
+            // Split platforms and collect unique values
+            const allPlatforms = urlData.flatMap(item => item.platform.split(', ').map(p => p.trim()));
+            const uniquePlatforms = [...new Set(allPlatforms)];
+            uniquePlatforms.sort(); // Sort alphabetically for consistency
+
+            uniquePlatforms.forEach(platform => {
                 const tag = document.createElement('div');
                 tag.className = 'tag';
                 tag.textContent = platform;
@@ -939,18 +943,19 @@
             });
         }
 
-        // Filter by tag
+        // Filter by tag (match any part of the platform string)
         function filterByTag(platform) {
             const tags = document.querySelectorAll('.tag');
             tags.forEach(tag => tag.classList.remove('active'));
             const activeTagElement = Array.from(tags).find(tag => tag.textContent === platform);
+
             if (activeTag === platform) {
                 activeTag = null;
                 filteredData = [...urlData];
             } else {
                 activeTag = platform;
                 activeTagElement.classList.add('active');
-                filteredData = urlData.filter(item => item.platform === platform);
+                filteredData = urlData.filter(item => item.platform.includes(platform));
             }
             document.getElementById('filterInput').value = '';
             populateTable(filteredData);
@@ -1052,7 +1057,7 @@
 
         // Initial setup: populate table with full data and tags
         populateTable(urlData); // Show all data immediately
-        populateTags();         // Populate tags
+        populateTags();         // Populate tags with split platforms
         urlData.sort((a, b) => a.platform.localeCompare(b.platform)); // Sort by platform
         document.querySelector('th').classList.add('asc');            // Set initial sort indicator
         document.querySelector('th i').className = 'fas fa-sort-up';
