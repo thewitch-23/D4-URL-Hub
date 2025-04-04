@@ -2,94 +2,121 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
     <title>D4 URL Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         /* General Styles */
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #333333; /* Charcoal Gray Background */
-            color: #f1f1f1; /* Light Gray Text */
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #333333, #1a1a1a);
+            color: #f5f5f5;
             margin: 0;
-            padding: 0;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
         }
 
         h1 {
             text-align: center;
             margin-top: 20px;
-            font-size: 2.5em;
-            color: #f1f1f1; /* Light Gray Heading */
+            font-size: 3em;
+            color: #f5f5f5;
+            font-weight: 700;
         }
 
         p {
             font-size: 1.2em;
-            color: #f1f1f1;
+            color: #f5f5f5;
             margin: 10px 0;
+            font-weight: 400;
         }
 
         /* Table Styles */
         table {
-            width: 90%; /* Increase the table width */
-            max-width: 1200px; /* Set a maximum width to prevent stretching too far */
+            width: 90%;
+            max-width: 1200px;
             margin-top: 30px;
             border-collapse: collapse;
-            background-color: #444444; /* Dark Gray Table Background */
+            background-color: #444444;
             border-radius: 8px;
             overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
         th, td {
-            padding: 12px;
+            padding: 15px;
             text-align: left;
-            border-bottom: 1px solid #555555; /* Subtle border */
+            border-bottom: 1px solid #555555;
         }
 
         th {
-            background-color: #555555; /* Slightly lighter gray for header */
-            color: #f1f1f1;
-            cursor: pointer; /* Indicate sortable columns */
+            background-color: #555555;
+            color: #f5f5f5;
+            cursor: pointer;
+            position: relative;
         }
 
         th:hover {
-            background-color: #666666; /* Hover effect for sortable headers */
+            background-color: #666666;
+        }
+
+        th.asc::after {
+            content: " ↑";
+            position: absolute;
+            right: 10px;
+        }
+
+        th.desc::after {
+            content: " ↓";
+            position: absolute;
+            right: 10px;
         }
 
         td {
-            color: #e0e0e0; /* Lighter text for rows */
+            color: #f5f5f5;
+        }
+
+        tr:nth-child(even) {
+            background-color: #4a4a4a;
+        }
+
+        tr:hover {
+            background-color: #555555;
+            transition: background-color 0.3s ease;
         }
 
         /* Table Link Styling */
         a {
-            color: #66ccff; /* Light blue color for links */
+            color: #66ccff;
             text-decoration: none;
             font-weight: bold;
         }
 
         a:hover {
-            color: #ffcc00; /* Hover effect: yellow */
+            color: #ffcc00;
         }
 
         /* Filter Input Styling */
         #filterInput {
             padding: 12px;
-            width: 90%; /* Increase input width */
-            max-width: 800px; /* Set a max width to prevent stretching too far */
+            width: 90%;
+            max-width: 800px;
             margin-top: 20px;
-            background-color: #555555; /* Dark input background */
-            border: 1px solid #666666; /* Light border */
-            color: #f1f1f1;
+            background-color: #555555;
+            border: 1px solid #666666;
+            color: #f5f5f5;
             font-size: 1.1em;
             border-radius: 5px;
         }
 
         #filterInput:focus {
             outline: none;
-            border-color: #66ccff; /* Highlight border color on focus */
+            border-color: #66ccff;
+            box-shadow: 0 0 5px rgba(102, 204, 255, 0.5);
         }
 
         /* Clear Button Styling */
@@ -102,25 +129,47 @@
             color: #fff;
             cursor: pointer;
             font-size: 1.1em;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         #clearButton:hover {
             background-color: #ffcc00;
         }
+
+        #clearButton:focus {
+            box-shadow: 0 0 5px rgba(102, 204, 255, 0.5);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+            h1 {
+                font-size: 2em;
+            }
+            #filterInput, #clearButton {
+                width: 100%;
+                margin-left: 0;
+                margin-top: 10px;
+            }
+        }
     </style>
 </head>
 <body>
     <h1>D4 URL Hub</h1>
-    <p>Filter by platform, URL name, or description:</p>
-    <input type="text" id="filterInput" onkeyup="debounceFilter()" placeholder="Search for platforms, URL names, or descriptions..">
+    <p>Filter by platform, title, or description:</p>
+    <input type="text" id="filterInput" onkeyup="debounceFilter()" placeholder="Search by platform, title, or description...">
     <button id="clearButton" onclick="clearFilter()">Clear</button>
 
     <table id="linksTable">
         <thead>
             <tr>
-                <th onclick="sortTable(0)">Platform</th>
-                <th onclick="sortTable(1)">URL</th>
-                <th onclick="sortTable(2)">Description</th>
+                <th onclick="sortTable(0)" aria-sort="none">Platform</th>
+                <th onclick="sortTable(1)" aria-sort="none">URL</th>
+                <th onclick="sortTable(2)" aria-sort="none">Description</th>
             </tr>
         </thead>
         <tbody>
@@ -129,7 +178,7 @@
     </table>
 
     <script>
-        // Hardcoded URL data (full list restored)
+        // Hardcoded URL data (unchanged)
         const urlData = [
             {
                 "platform": "M365",
@@ -661,15 +710,15 @@
             },
             { 
                 "platform": "Decryption", 
-                "url": "https://github.com/Ciphey/Ciphey", 
-                "description": "Automatically decrypt encryptions without knowing the key or cipher, decode encodings, and crack hashes", 
-                "title": "Ciphey" 
-            },
-            { 
-                "platform": "Decryption", 
                 "url": "https://github.com/gchq/CyberChef", 
                 "description": "The Cyber Swiss Army Knife - a web app for encryption, encoding, compression and data analysis", 
                 "title": "CyberChef" 
+            },
+            { 
+                "platform": "Decryption", 
+                "url": "https://github.com/Ciphey/Ciphey", 
+                "description": "Automatically decrypt encryptions without knowing the key or cipher, decode encodings, and crack hashes", 
+                "title": "Ciphey" 
             },
             { 
                 "platform": "OneDrive", 
@@ -776,7 +825,6 @@
                 console.error("Table body not found!");
                 return;
             }
-            console.log("Populating table with", urlData.length, "items"); // Debug log
             tableBody.innerHTML = '';  // Clear any existing rows
 
             if (!urlData || urlData.length === 0) {
@@ -784,8 +832,8 @@
                 return;
             }
 
-            // Sort the data alphabetically by 'title' initially
-            urlData.sort((a, b) => a.title.localeCompare(b.title));
+            // Sort the data alphabetically by 'platform' initially
+            urlData.sort((a, b) => a.platform.localeCompare(b.platform));
 
             // Loop through the sorted data and create rows
             urlData.forEach(link => {
@@ -866,10 +914,17 @@
             filterTable();
         }
 
-        // Function to sort the table by column
+        // Function to sort the table by column with indicators
         function sortTable(columnIndex) {
             const table = document.getElementById('linksTable');
-            let rows, switching = true, i, shouldSwitch, dir = 'asc', switchCount = 0;
+            const headers = table.querySelectorAll('th');
+            const th = headers[columnIndex];
+            let rows, switching = true, i, shouldSwitch, dir = th.classList.contains('asc') ? 'desc' : 'asc', switchCount = 0;
+
+            // Remove sort indicators from all headers
+            headers.forEach(header => header.classList.remove('asc', 'desc'));
+            th.classList.add(dir);
+
             while (switching) {
                 switching = false;
                 rows = table.rows;
@@ -893,6 +948,8 @@
                     switchCount++;
                 } else if (switchCount === 0 && dir === 'asc') {
                     dir = 'desc';
+                    th.classList.remove('asc');
+                    th.classList.add('desc');
                     switching = true;
                 }
             }
