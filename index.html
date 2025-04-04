@@ -114,7 +114,7 @@
     <h1>D4 URL Hub</h1>
     <p>Filter by platform, URL name, or description:</p>
     <input type="text" id="filterInput" onkeyup="debounceFilter()" placeholder="Search for platforms, URL names, or descriptions..">
-    <button id="clearButton" onclick=" klklklklclearFilter()">Clear</button>
+    <button id="clearButton" onclick="clearFilter()">Clear</button>
 
     <table id="linksTable">
         <thead>
@@ -130,7 +130,7 @@
     </table>
 
     <script>
-        // Hardcoded URL data (unchanged, truncated for brevity)
+        // Hardcoded URL data (full list restored)
         const urlData = [
             {
                 "platform": "M365",
@@ -144,7 +144,630 @@
                 "description": "Powershell tool designed to streamline the process of collecting all necessary data and information from various sources within Microsoft.",
                 "title": "Microsoft Extractor Suite"
             },
-            // ... (rest of your data here)
+            {
+                "platform": "iOS",
+                "url": "https://github.com/prosch88/UFADE",
+                "description": "Universal Forensic Apple Device Extractor.",
+                "title": "UFADE"
+            },
+            {
+                "platform": "iOS",
+                "url": "https://github.com/h4x0r/parse_sms.db",
+                "description": "Extracts iMessage, RCS, SMS/MMS chat history from iOS database file.",
+                "title": "Parse_SMS.db"
+            },
+            {
+                "platform": "iOS",
+                "url": "https://github.com/AXYS-Cyber/iCatch",
+                "description": "A utility to process the iOS Cache.sqlite database and create a timelined KML map for use in Google Earth.",
+                "title": "iCatch"
+            },
+            {
+                "platform": "Outlook",
+                "url": "https://github.com/iluvadev/XstReader",
+                "description": "XstReader is an open source viewer for Microsoft Outlook’s .ost and .pst files. View and inspect all content and export messages and attachments.",
+                "title": "XstReader"
+            },
+            {
+                "platform": "Unix-Like System",
+                "url": "https://github.com/tclahr/uac",
+                "description": "Unix-Like Artifact Collector. Automates the collection of artifacts from Unix-like systems, including AIX, ESXi, FreeBSD, Linux, macOS, NetBSD, NetScaler, OpenBSD and Solaris.",
+                "title": "UAC"
+            },
+            {
+                "platform": "OneDrive",
+                "url": "https://github.com/Beercow/OCRMe",
+                "description": "Tool designed to parse OneDrive Business OCR Data from Microsoft.ListSync.db on Windows OS.",
+                "title": "OCRMe"
+            },
+            {
+                "platform": "Mac OSX, iOS",
+                "url": "https://github.com/dlcowen/FSEventsParser",
+                "description": "Parser for OSX/iOS FSEvents Logs.",
+                "title": "FSEventsParser"
+            },
+            {
+                "platform": "Azure",
+                "url": "https://github.com/SpecterOps/BloodHound-Legacy",
+                "description": "BloodHound uses graph theory to reveal the hidden and often unintended relationships within an Active Directory or Azure environment.",
+                "title": "BloodHound"
+            },
+            {
+                "platform": "Windows",
+                "url": "https://github.com/Digital-Defense-Institute/triage.zip",
+                "description": "triage.zip provides an out-of-the-box Velociraptor triage collector for Windows, pre-configured for rapid and effective incident response. The project is intended for responders who need a reliable offline collector without the hassle of building from scratch.",
+                "title": "Triage.zip"
+            },
+            {
+                "platform": "AWS",
+                "url": "https://github.com/dlcowen/AWSExaminer",
+                "description": "A Python-based GUI tool for enumerating and analyzing AWS resources across multiple accounts and regions. This tool helps security professionals, incident responders, and cloud administrators quickly gather and analyze AWS resource information across an entire AWS Organization.",
+                "title": "AWS Examiner"
+            },
+            {
+                "platform": "iOS",
+                "url": "https://www.hexordia.com/sysdiagnoselogtoolkitdownload",
+                "description": "Free toolkit to manage and export logs from an iOS device.",
+                "title": "Hexordia Sysdiagnose Log Toolkit"
+            },
+            {
+                "platform": "Mobile, iOS, Android",
+                "url": "https://4n6appfinder.habben.net/",
+                "description": "Web app built to allow digital forensic professionals to search for the forensic tools that will parse artifacts from various apps.",
+                "title": "4n6-App-Finder"
+            },
+            {
+                "platform": "iOS",
+                "url": "https://www.hexordia.com/hexordia-syslog-monitoring-tool",
+                "description": "Free tool to monitor Syslogs on iOS devices in real time.",
+                "title": "Hexordia SysLog Monitoring Tool"
+            },
+            {
+                "platform": "iOS",
+                "url": "https://www.hexordia.com/evanolece",
+                "description": "Evanole Community Edition acquires and parses real-time system traffic from iOS devices.",
+                "title": "Hexordia Evanole"
+            },
+            {
+                "platform": "Android",
+                "url": "https://github.com/Genymobile/scrcpy",
+                "description": "This application mirrors Android devices (video and audio) connected via USB or over TCP/IP, and allows to control the device with the keyboard and the mouse of the computer. It does not require any root access. It works on Linux, Windows and macOS.",
+                "title": "Scrcpy"
+            },
+            {
+                "platform": "Windows",
+                "url": "https://github.com/northloopforensics/Bitlocker_Key_Finder",
+                "description": "Search datasets for Bitlocker recovery files and triage live systems for Bitlocker keys.",
+                "title": "Bitlocker_Key_Finder"
+            },
+            {
+                "platform": "SQLite",
+                "url": "https://github.com/stark4n6/SQLiteWalker",
+                "description": "SQLite Walker is a python script to walk a folder or a zip file looking for SQLite databases.",
+                "title": "SQLite Walker"
+            },
+            {
+                "platform": "SQLite",
+                "url": "https://github.com/SpyderForensics/SQLite_Forensics/tree/main/SQBite",
+                "description": "This script will parse all records in an SQLite Main Database File and WAL file. The files are processed at a physical level to ensure all data is extracted.",
+                "title": "SQBite"
+            },
+            {
+                "platform": "SQLite",
+                "url": "https://github.com/pawlaszczyk/fqlite",
+                "description": "Forensic SQLite Data Recovery Tool. A GUI tool to find and restore deleted records in SQlite databases. It therefore examines the database for entries marked as deleted.",
+                "title": "FQLite"
+            },
+            {
+                "platform": "Microsoft Office",
+                "url": "https://github.com/nccgroup/MetadataPlus",
+                "description": "A tool to extract metadata from Microsoft Office files that includes new locations not checked in other tools.",
+                "title": "MetadataPlus"
+            },
+            {
+                "platform": "Google Workspace",
+                "url": "https://github.com/GAM-team/GAM",
+                "description": "GAM is a command line tool for Google Workspace admins to manage domain and user settings quickly and easily.",
+                "title": "GAM"
+            },
+            {
+                "platform": "iOS",
+                "url": "https://github.com/eichbaumj/Python/tree/master/Backup2FS",
+                "description": "Backup2FS was created to simplify forensic analysis by allowing you to view the backup as a normalized file system instead of navigating complex domains. I'm sharing this in case anyone else is looking for a tool with this functionality—ideal for iOS backup analysis, digital forensics, and mobile artifact investigation.",
+                "title": "Backup2FS"
+            },
+            {
+                "platform": "Microsoft Azure",
+                "url": "https://tools.netsa.cert.org/script-azure-flow-logs/index.html",
+                "description": "This is a collection of scripts for working with Azure flow logs. Currently includes a script that restructures the deeply nested, event-driven JSON Azure NSG logs into a more analyst-friendly mode (eliminate fixed-value, redudant, and structural fields, flatten structure, and unpack composite fields). The script is structured as three successive transformations on the data: flattening, simplifying, and consolidating. The flattening transform collapses unnecessary nesting, making access to fields more direct during an analysis. The simplifying transform removes fields irrelevant to cybersecurity or that are redundant. This transform reduces the processing and storage requirements associated with the data.",
+                "title": "Azure Flow Log Scripts"
+            },
+            {
+                "platform": "Google Workspace",
+                "url": "https://github.com/invictus-ir/ALFA",
+                "description": "Automated Audit Log Forensic Analysis for Google Workspace. You can use this tool to acquire all Google Workspace audit logs and to perform automated forensic analysis on the audit logs using statistics and the MITRE ATT&CK Cloud Framework.",
+                "title": "ALFA"
+            },
+            {
+                "platform": "Mac OSX, iOS",
+                "url": "https://github.com/mxrch/ProtoDeep",
+                "description": "ProtoDeep is an easy to use tool that allows you to decode and analyze protobuf data.",
+                "title": "ProtoDeep"
+            },
+            {
+                "platform": "Azure",
+                "url": "https://github.com/HuskyHacks/cazadora",
+                "description": "Simple hunting script for suspicious Microsoft M365 OAuth Apps. Enumerate the user's tenant and collect the the tenant's applications and service principals.",
+                "title": "Cazadora"
+            },
+            {
+                "platform": "Remarkable",
+                "url": "https://github.com/chopikus/rm-exporter",
+                "description": "Export large notes & folders from reMarkable.",
+                "title": "rm-exporter"
+            },
+            {
+                "platform": "Windows",
+                "url": "https://github.com/dwmetz/CyberPipe",
+                "description": "An easy to use PowerShell script to collect memory and disk forensics for DFIR investigations.",
+                "title": "CyberPipe"
+            },
+            {
+                "platform": "Windows",
+                "url": "https://github.com/orlikoski/CyLR",
+                "description": "The CyLR tool collects forensic artifacts from hosts with NTFS file systems quickly, securely and minimizes impact to the host. Similar to KAPE.",
+                "title": "CyLR"
+            },
+            {
+                "platform": "WeChat",
+                "url": "https://github.com/kn007/silk-v3-decoder",
+                "description": "Decode silk v3 audio files (like wechat amr, aud files, qq slk files) and convert to other format (like mp3). Batch conversion support.",
+                "title": "Silk-v3-Decoder"
+            },
+            {
+                "platform": "Discord",
+                "url": "https://github.com/nulldg/DiscordChatExporterPlus",
+                "description": "Exports Discord chat logs to a file (HTML, TXT, CSV, or JSON).",
+                "title": "DiscordChatExporterPlus"
+            },
+            { 
+                "platform": "Windows",
+                "url": "https://github.com/digitalsleuth/WIN-FOR",
+                "description": "Windows Forensics Environment Builder",
+                "title": "WIN-FOR" 
+            },
+            { 
+                "platform": "Sqlite",
+                "url": "https://github.com/kacos2000/Queries",
+                "description": "Compilation of SQlite queries for commmon databases across Android, iOS, FireFox, Google Drive, Chrome, DropBox, Opera, Mozilla, WhatsApp, Viber, Skype, Windows, and others.",
+                "title": "Misc SQLite Queries" 
+            },
+            { 
+                "platform": "Universal", 
+                "url": "https://qemu.weilnetz.de/w64/", 
+                "description": "A generic and open source machine emulator and virtualizer. Also contains conversion tool.", 
+                "title": "QEMU" 
+            },
+            { 
+                "platform": "Mac OSX", 
+                "url": "https://github.com/mnrkbys/ma2tl", 
+                "description": "macOS forensic timeline generator using the analysis result DBs of mac_apt", 
+                "title": "ma2tl" 
+            },
+            { 
+                "platform": "Mac OSX", 
+                "url": "https://github.com/ydkhatri/mac_apt", 
+                "description": "mac_apt is a DFIR tool to process Mac computer full disk images (or live machines) and extract data/metadata useful for forensic investigation.", 
+                "title": "mac_apt" 
+            },
+            { 
+                "platform": "Mac OSX", 
+                "url": "https://github.com/n0fate/chainbreaker", 
+                "description": "Chainbreaker can be used to extract the following types of information from an OSX keychain in a forensically sound manner: Hashed Keychain password (suitable for cracking with hashcat or John the Ripper), Internet Passwords, Generic Passwords, Private Keys, Public Keys, X509 Certificates, Secure Notes, Appleshare Passwords.", 
+                "title": "Chainbreaker" 
+            },
+            { 
+                "platform": "Mac OSX, iOS", 
+                "url": "https://github.com/ydkhatri/MacForensics/tree/master/Deserializer", 
+                "description": "This converts an NSKeyedArchive (NSKA) plist into a normalized, unserialized one, that can be easily read.", 
+                "title": "Deserializer for Plists" 
+            },
+            { 
+                "platform": "Universal", 
+                "url": "https://www.digital-detective.net/dcode/", 
+                "description": "DCode™ is a FREE forensic utility for converting data found on desktop and mobile devices into human-readable timestamps.", 
+                "title": "Dcode" 
+            },
+            { 
+                "platform": "Windows", 
+                "url": "https://github.com/jschicht/LogFileParser", 
+                "description": "Parser for $LogFile on NTFS", 
+                "title": "LogFileParser" 
+            },
+            { 
+                "platform": "Windows", 
+                "url": "https://www.voidtools.com/downloads/", 
+                "description": "Everything is search engine that locates files and folders by filename instantly for Windows.", 
+                "title": "Everything" 
+            },
+            { 
+                "platform": "Windows", 
+                "url": "https://github.com/00010111/streemBOXlite", 
+                "description": "The desktop client of box.com created the streemfs SQLite database file. streemBOXlite parses this file to extract useful data from it and aviod manunal work. Probably most useful will be the match of file name to cache id.", 
+                "title": "streemBOXlite" 
+            },
+            { 
+                "platform": "Universal", 
+                "url": "https://exiftool.org/", 
+                "description": "ExifTool is a platform-independent Perl library plus a command-line application for reading, writing and editing meta information in a wide variety of files. ExifTool supports many different metadata formats including EXIF, GPS, IPTC, XMP, JFIF, GeoTIFF, ICC Profile, Photoshop IRB, FlashPix, AFCP and ID3, Lyrics3, as well as the maker notes of many digital cameras by Canon, Casio, DJI, FLIR, FujiFilm, GE, GoPro, HP, JVC/Victor, Kodak, Leaf, Minolta/Konica-Minolta, Motorola, Nikon, Nintendo, Olympus/Epson, Panasonic/Leica, Pentax/Asahi, Phase One, Reconyx, Ricoh, Samsung, Sanyo, Sigma/Foveon and Sony.", 
+                "title": "ExifTool" 
+            },
+            { 
+                "platform": "Web", 
+                "url": "https://github.com/obsidianforensics/unfurl", 
+                "description": "Extract and Visualize Data from URLs using Unfurl", 
+                "title": "Unfurl" 
+            },
+            { 
+                "platform": "Mac OSX", 
+                "url": "https://github.com/eneam/mboxviewer", 
+                "description": "A small but powerfull app for viewing MBOX files", 
+                "title": "MBOX Viewer" 
+            },
+            { 
+                "platform": "Windows", 
+                "url": "https://rufus.ie/en/", 
+                "description": "Rufus is a utility that helps format and create bootable USB flash drives, such as USB keys/pendrives, memory sticks, etc.", 
+                "title": "Rufus" 
+            },
+            { 
+                "platform": "Windows", 
+                "url": "https://github.com/simsong/bulk_extractor", 
+                "description": "Forensics tool that scans a disk image, a file, or a directory of files and extracts useful information without parsing the file system or file system structures. The results can be easily inspected, parsed, or processed with automated tools.", 
+                "title": "Bulk Extractor" 
+            },
+            { 
+                "platform": "Windows", 
+                "url": "https://github.com/WithSecureLabs/chainsaw", 
+                "description": "Chainsaw provides a powerful ‘first-response’ capability to quickly identify threats within Windows forensic artefacts such as Event Logs and the MFT file. Chainsaw offers a generic and fast method of searching through event logs for keywords, and by identifying threats using built-in support for Sigma detection rules, and via custom Chainsaw detection rules.", 
+                "title": "Chainsaw" 
+            },
+            { 
+                "platform": "Web", 
+                "url": "https://github.com/obsidianforensics/hindsight", 
+                "description": "Hindsight is a free tool for analyzing web artifacts. It started with the browsing history of the Google Chrome web browser and has expanded to support other Chromium-based applications.", 
+                "title": "Hindsight" 
+            },
+            { 
+                "platform": "Linux", 
+                "url": "https://github.com/alex-cart/LEAF", 
+                "description": "Linux Evidence Acquisition Framework (LEAF) acquires artifacts and evidence from Linux EXT4 systems, accepting user input to customize the functionality of the tool for easier scalability. Offering several modules and parameters as input, LEAF is able to use smart analysis to extract Linux artifacts and output to an ISO image file.", 
+                "title": "LEAF" 
+            },
+            { 
+                "platform": "Google", 
+                "url": "https://github.com/digitalsleuth/google-takeout-location", 
+                "description": "Python 3 script to parse Google Takeout Location JSON files into KML.", 
+                "title": "Google Takeout Location Parser (GTL)" 
+            },
+            { 
+                "platform": "Windows", 
+                "url": "https://github.com/jschicht/Mft2Csv", 
+                "description": "This tool is for parsing, decoding and logging information from the Master File Table ($MFT) to a csv. It is logging a large amount of data and that has been the main purpose from the very start. Having all this data in a csv is convenient for further analysis. It supports getting the $MFT from a variety of sources", 
+                "title": "Mft2Csv" 
+            },
+            { 
+                "platform": "Windows", 
+                "url": "https://ericzimmerman.github.io/#!index.md", 
+                "description": "Aggregation of powerful WindowsArtifact and Registry parsing utilities created by Eric Zimmerman. Includes Amcache, ShimCache, Regex, EVTx, Jump List, LNK, $MFT, $Boot, $J, $I30, $LogFile, Prefetch, RecentFileCache, VSC, Timeline parsers.", 
+                "title": "Zimmerman Suite" 
+            },
+            { 
+                "platform": "Windows", 
+                "url": "https://thumbcacheviewer.github.io/", 
+                "description": "Thumbcache Viewer allows you to extract thumbnail images from the thumbcache_*.db and iconcache_*.db database files found on Windows Vista, Windows 7, Windows 8, Windows 8.1, Windows 10, and Windows 11.", 
+                "title": "Thumbcache Viewer" 
+            },
+            { 
+                "platform": "Windows", 
+                "url": "https://thumbsviewer.github.io/", 
+                "description": "Thumbs Viewer allows you to extract thumbnail images from the Thumbs.db, ehthumbs.db, ehthumbs_vista.db, Image.db, Video.db, TVThumb.db, and musicThumbs.db database files found on various Windows operating systems.", 
+                "title": "Thumbs Viewer" 
+            },
+            { 
+                "platform": "Windows", 
+                "url": "https://github.com/stark4n6/TeraLogger", 
+                "description": "A Teracopy history log parser", 
+                "title": "TeraLogger" 
+            },
+            { 
+                "platform": "Windows", 
+                "url": "https://github.com/MHaggis/PowerShell-Hunter", 
+                "description": "PowerShell-Hunter is a growing collection of PowerShell-based threat hunting tools designed to help defenders investigate and detect malicious activity in Windows environments.PCA (Program Compatibility Assistant) Analysis, UserAssist Registry Analysis, Prefetch Hunter Analysis, Shellbag Hunter Analysis.", 
+                "title": "PowerShell-Hunter" 
+            },
+            { 
+                "platform": "Windows", 
+                "url": "https://github.com/acquiredsecurity/forensic-timeliner", 
+                "description": "Forensic Timeliner is a PowerShell-based tool that automates the process of aggregating and formatting forensic artifact CSV data output from Chainsaw and KAPE / EZTools into a structured MINI Master Timeline and can output to CSV, JSON and XLSX.", 
+                "title": "Forensic Timeliner" 
+            },
+            { 
+                "platform": "Windows", 
+                "url": "https://github.com/CyberCX-DFIR/usnjrnl_rewind", 
+                "description": "This script will process the outputs of Eric Zimmerman's MFTEcmd tool and produce a csv that has the complete and correct path for every file and folder (no more Unknowns).", 
+                "title": "usnjrnl_rewind" 
+            },
+            { 
+                "platform": "Vehicles", 
+                "url": "https://github.com/abrignoni/VLEAPP", 
+                "description": "Vehicle Logs Events And Properties Parser", 
+                "title": "VLEAPP" 
+            },
+            { 
+                "platform": "iOS", 
+                "url": "https://github.com/abrignoni/iLEAPP", 
+                "description": "iOS Logs, Events, And Plist Parser", 
+                "title": "iLEAPP" 
+            },
+            { 
+                "platform": "Decryption", 
+                "url": "https://github.com/mufeedvh/pdfrip", 
+                "description": "A multi-threaded PDF password cracking utility equipped with commonly encountered password format builders and dictionary attacks.", 
+                "title": "PDFRip" 
+            },
+            { 
+                "platform": "Android", 
+                "url": "https://github.com/abrignoni/ALEAPP", 
+                "description": "Android Logs Events And Protobuf Parser", 
+                "title": "ALEAPP" 
+            },
+            { 
+                "platform": "iOS", 
+                "url": "https://offcornerdev.com/bundleid.html", 
+                "description": "This site will help you find Bundle-Ids quickly. Enter the app name in the search field and copy the bundle-id by clicking on it!", 
+                "title": "Bundle ID Finder" 
+            },
+            { 
+                "platform": "iOS", 
+                "url": "https://github.com/pug4N6/bundleID_lookup", 
+                "description": "A Python script to query http://itunes.apple.com for info related to an app bundleID.", 
+                "title": "Bundle ID Lookup" 
+            },
+            { 
+                "platform": "Android", 
+                "url": "https://github.com/den4uk/andriller", 
+                "description": "Software utility with a collection of forensic tools for smartphones. It performs read-only, forensically sound, non-destructive acquisition from Android devices.", 
+                "title": "Andriller" 
+            },
+            { 
+                "platform": "Android", 
+                "url": "https://github.com/RealityNet/android_triage", 
+                "description": "Bash script to extract data from an Android device.", 
+                "title": "Android Triage" 
+            },
+            { 
+                "platform": "Mac OSX, iOS", 
+                "url": "https://github.com/mac4n6/APOLLO", 
+                "description": "Apple Pattern of Life Lazy Output'er (APOLLO)", 
+                "title": "APOLLO" 
+            },
+            { 
+                "platform": "iOS, Sqlite", 
+                "url": "https://doubleblak.com/app.php?id=ArtEx2", 
+                "description": "ArtEx is a free tool for iOS forensics verification, validation, reporting, and research.", 
+                "title": "ArtEx" 
+            },
+            { 
+                "platform": "Mac OSX, iOS", 
+                "url": "https://github.com/cclgroupltd/ccl-segb", 
+                "description": "Python modules for parsing SEGB (v1 and v2) files ('Biome') and a generic module to automatically determine which to parse based on it's header.", 
+                "title": "ccl-segb" 
+            },
+            { 
+                "platform": "Android", 
+                "url": "https://github.com/pxb1988/dex2jar", 
+                "description": "Tools to work with android .dex and java .class files", 
+                "title": "Dex2jar" 
+            },
+            { 
+                "platform": "iOS", 
+                "url": "https://github.com/cheeky4n6monkey/iOS_sysdiagnose_forensic_scripts", 
+                "description": "Scripts to parse various iOS sysdiagnose logs. Based upon the forensic research of Mattia Epifani, Heather Mahalik and Cheeky4n6monkey.", 
+                "title": "iOS_Sysdianose_forensic_scripts" 
+            },
+            { 
+                "platform": "iOS", 
+                "url": "https://github.com/MaxiHuHe04/iTunes-Backup-Explorer", 
+                "description": "A graphical tool that can extract and replace files from encrypted and non-encrypted iOS backups", 
+                "title": "iTunes Backup Explorer" 
+            },
+            { 
+                "platform": "Mobile, iOS, Android", 
+                "url": "https://github.com/DFIRScience/UFDR2DIR", 
+                "description": "A script to convert a Cellebrite UFDR to the original file structure.", 
+                "title": "UFDR2DIR" 
+            },
+            { 
+                "platform": "Windows", 
+                "url": "https://s3.amazonaws.com/cyb-us-prd-kape/kape.zip", 
+                "description": "Kroll Artifact Parser and Extractor (KAPE) is primarily a triage program that will target a device or storage location, find the most forensically relevant artifacts (based on your needs), and parse them within a few minutes. Because of its speed, KAPE allows investigators to find and prioritize the more critical systems to their case. Additionally, KAPE can be used to collect the most critical artifacts prior to the start of the imaging process. While the imaging completes, the data generated by KAPE can be reviewed for leads, building timelines, etc.", 
+                "title": "KAPE" 
+            },
+            { 
+                "platform": "Windows", 
+                "url": "https://wiebetech.com/software/writeblocking-validation-utility/", 
+                "description": "The WriteBlocking Validation Utility provides an easy-to-use method to determine if a hardware writeblocker blocks low-level hard drive commands.", 
+                "title": "WriteBlocking Validation Utility" 
+            },
+            { 
+                "platform": "Windows", 
+                "url": "https://github.com/MarkBaggett/srum-dump/tree/version3", 
+                "description": "SRUM-DUMP extracts data from the System Resource Utilization Management (SRUM) database and generates an Excel spreadsheet. This tool is invaluable for forensic investigations, as SRUM maintains records of applications that have run on a system within the last 30 days.", 
+                "title": "SRUM-DUMP" 
+            },
+            { 
+                "platform": "Linux", 
+                "url": "https://github.com/MagnetForensics/dumpit-linux", 
+                "description": "Memory acquisition for Linux that makes sense.", 
+                "title": "dumpit-linux" 
+            },
+            { 
+                "platform": "Windows", 
+                "url": "https://www.magnetforensics.com/resources/magnet-ram-capture/", 
+                "description": "Magnet RAM Capture is a free imaging tool designed to capture the physical memory of a suspect’s computer, allowing investigators to recover and analyze valuable artifacts that are often only found in memory.", 
+                "title": "Magnet-ram-capture" 
+            },
+            { 
+                "platform": "RAM Memory", 
+                "url": "https://github.com/volatilityfoundation/volatility3", 
+                "description": "Volatility is the world's most widely used framework for extracting digital artifacts from volatile memory (RAM) samples.", 
+                "title": "Volatility" 
+            },
+            { 
+                "platform": "RAM Memory", 
+                "url": "https://github.com/k1nd0ne/VolWeb", 
+                "description": "VolWeb is a digital forensic memory analysis platform that leverages the power of the Volatility 3 framework. It is dedicated to aiding in investigations and incident responses.", 
+                "title": "VolWeb" 
+            },
+            { 
+                "platform": "M365", 
+                "url": "https://github.com/evild3ad/Microsoft-Analyzer-Suite", 
+                "description": "A collection of PowerShell scripts for analyzing data from Microsoft 365 and Microsoft Entra ID.", 
+                "title": "Microsoft-Analyzer-Suite" 
+            },
+            { 
+                "platform": "Mobile", 
+                "url": "https://github.com/EFForg/rayhunter", 
+                "description": "Rust tool to detect cell site simulators on an orbic mobile hotspot", 
+                "title": "Rayhunter" 
+            },
+            { 
+                "platform": "Web", 
+                "url": "https://urlscan.io/", 
+                "description": "urlscan.io is a free service to scan and analyse websites. When a URL is submitted to urlscan.io, an automated process will browse to the URL like a regular user and record the activity that this page navigation creates. This includes the domains and IPs contacted, the resources (JavaScript, CSS, etc) requested from those domains, as well as additional information about the page itself. urlscan.io will take a screenshot of the page, record the DOM content, JavaScript global variables, cookies created by the page, and a myriad of other observations. If the site is targeting the users one of the more than 900 brands tracked by urlscan.io, it will be highlighted as potentially malicious in the scan results.", 
+                "title": "URLScan" 
+            },
+            { 
+                "platform": "EML Email", 
+                "url": "https://github.com/keraattin/EmailAnalyzer", 
+                "description": "With EmailAnalyzer you can analyze your suspicious emails. You can extract headers, links, and hashes from the .eml file and you can generate reports.", 
+                "title": "Email Analyzer" 
+            },
+            { 
+                "platform": "Web", 
+                "url": "https://www.virustotal.com/gui/home/upload", 
+                "description": "Analyse suspicious files, domains, IPs and URLs to detect malware and other breaches, automatically share them with the security community.", 
+                "title": "VirusTotal" 
+            },
+            { 
+                "platform": "Decryption", 
+                "url": "https://github.com/Ciphey/Ciphey", 
+                "description": "Automatically decrypt encryptions without knowing the key or cipher, decode encodings, and crack hashes", 
+                "title": "Ciphey" 
+            },
+            { 
+                "platform": "Decryption", 
+                "url<%@ include file="/WEB-INF/views/include.jsp" %>": "https://github.com/gchq/CyberChef", 
+                "description": "The Cyber Swiss Army Knife - a web app for encryption, encoding, compression and data analysis", 
+                "title": "CyberChef" 
+            },
+            { 
+                "platform": "OneDrive", 
+                "url": "https://github.com/Beercow/OneDriveExplorer", 
+                "description": "OneDriveExplorer is a command line and GUI based application for reconstructing the folder structure of OneDrive from the <UserCid>.dat and <UserCid>.dat.previous file.", 
+                "title": "OneDriveExplorer" 
+            },
+            { 
+                "platform": "Google Drive", 
+                "url": "https://github.com/00010111/gMetaDataParse", 
+                "description": "Extracts information from metadata_sqlite_db and the corresponding content_cache folder. Both artifacts of Google Drive for Desktop", 
+                "title": "gMetaDataParse" 
+            },
+            { 
+                "platform": "Windows", 
+                "url": "https://github.com/AndrewRathbun/WinSearchDBAnalyzer", 
+                "description": "Parse normal records and recover deleted records in Windows.edb. This file is related to Windows Search and can contain many interesting forensic artifacts.", 
+                "title": "WinSearchDBAnalyzer" 
+            },
+            { 
+                "platform": "Universal", 
+                "url": "https://www.moderncsv.com/", 
+                "description": "A Sophisticated CSV Editor/Viewer for Windows, Mac, and Linux.", 
+                "title": "Modern CSV" 
+            },
+            { 
+                "platform": "Universal", 
+                "url": "https://github.com/nannib/Imm2Virtual", 
+                "description": "This is a Windows 64 bit GUI for a procedure to virtualize your EWF(E01), DD (raw), AFF disk image file without converting it, directly with VirtualBox. It is forensically proof.", 
+                "title": "Imm2Virtual V. 2.0" 
+            },
+            { 
+                "platform": "Windows", 
+                "url": "https://sites.google.com/site/forensicnote/ntfs-log-tracker", 
+                "description": "This tool can parse $LogFile, $UsnJrnl:$J of NTFS and carve UsnJrnl record in multiple files(unallocated dump, file slack, pagefile.sys, memory dump, vss, ...)", 
+                "title": "NTFS Log Tracker" 
+            },
+            { 
+                "platform": "Windows", 
+                "url": "https://github.com/keydet89/RegRipper3.0", 
+                "description": "Regripper’s CLI tool can be used to surgically extract, translate, and display information (both data and metadata) from Registry-formatted files via plugins in the form of Perl-scripts. It allows the analyst to select a hive-file to parse and a plugin or a profile, which is a list of plugins to run against the given hive. The results go to STDOUT and can be redirected to a file, that the analyst designates.", 
+                "title": "RegRipper3.0" 
+            },
+            { 
+                "platform": "Gmail", 
+                "url": "https://github.com/ArsenalRecon/GmailURLDecoder", 
+                "description": "Gmail URL Decoder is an Open Source Python tool that can be used against plaintext or arbitrary raw data files in order to find, extract, and decode information from Gmail URLs related to both the new and legacy Gmail interfaces", 
+                "title": "Gmail URL Decoder" 
+            },
+            { 
+                "platform": "Windows", 
+                "url": "https://github.com/ArsenalRecon/BackstageParser", 
+                "description": "Arsenal's Backstage Parser is a Python tool that can be used to parse the contents of Microsoft Office files found in the “\Users(User)\AppData\Local\Microsoft\Office\16.0\BackstageinAppNavCache” path.", 
+                "title": "Microsoft Office Backstage Parser" 
+            },
+            { 
+                "platform": "Cloud", 
+                "url": "https://getdataforensics.com/product/fex-cloud-capture/", 
+                "description": "FEX Cloud Capture™ is a software tool for the acquisition of data stored on remote cloud servers. FEX Cloud Capture aids in maintaining the integrity and authenticity of the evidence, by collecting data in a forensically sound manner. Includes DropBox, Google Drive, OneDrive.", 
+                "title": "FEX Cloud Capture™" 
+            },
+            { 
+                "platform": "Web", 
+                "url": "https://www.foxtonforensics.com/browser-history-capturer/", 
+                "description": "Browser History Capturer allows you to easily capture web browser history from a Windows computer. The tool can be run from a USB dongle or via a Remote Desktop connection to capture history from Chrome, Edge, Firefox and Internet Explorer web browsers. The history files are copied to the chosen destination in their original format, allowing them to be analysed later using your tool of choice.", 
+                "title": "Browser History Capturer" 
+            },
+            { 
+                "platform": "Web", 
+                "url": "https://www.foxtonforensics.com/browser-history-viewer/", 
+                "description": "Browser History Viewer allows you to easily view internet history from the main desktop web browsers.", 
+                "title": "Browser History Viewer" 
+            },
+            { 
+                "platform": "iOS", 
+                "url": "https://www.doubleblak.com/app.php?id=Spoopy", 
+                "description": "This tool is designed to take the 'ChatConversationStore.plist file from SnapChat on iPhone and parse out the conversations into a useable format.", 
+                "title": "Spoopy" 
+            },
+            { 
+                "platform": "Web", 
+                "url": "https://www.magnetforensics.com/resources/web-page-saver/", 
+                "description": "Magnet Web Page Saver (v3.3 released September 17th, 2020) is a perfect tool for capturing how web pages look at a specific point in time. This is especially useful in situations where the web pages need to be displayed in an environment where Internet access is not available (such as a court room).", 
+                "title": "Magnet Web Page Saver" 
+            },
+            { 
+                "platform": "Universal", 
+                "url": "https://github.com/log2timeline/plaso", 
+                "description": "Plaso or super timeline all the things, is a Python-based engine used by several tools for automatic creation of timelines. Plaso default behavior is to create super timelines but it also supports creating more targeted timelines. These timelines support digital forensic investigators/analysts, to correlate the large amount of information found in logs and other files found on an average computer.", 
+                "title": "Plaso" 
+            },
+            { 
+                "platform": "Universal", 
+                "url": "https://www.mitec.cz/hex.html", 
+                "description": "HexEdit is powerful hexadecimal editor.", 
+                "title": "HexEdit" 
+            }
         ];
 
         // Function to populate the table dynamically
