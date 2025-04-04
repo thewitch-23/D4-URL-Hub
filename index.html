@@ -35,7 +35,6 @@
             font-weight: 400;
         }
 
-        /* Filter and Buttons Container */
         .controls {
             display: flex;
             flex-wrap: wrap;
@@ -44,7 +43,6 @@
             margin-bottom: 20px;
         }
 
-        /* Table Styles */
         table {
             width: 90%;
             max-width: 1200px;
@@ -98,7 +96,6 @@
             transition: background-color 0.3s ease;
         }
 
-        /* Copy Button */
         .copy-btn {
             background: none;
             border: none;
@@ -112,7 +109,6 @@
             color: #ffcc00;
         }
 
-        /* No Results Message */
         #noResults {
             display: none;
             text-align: center;
@@ -121,7 +117,6 @@
             font-size: 1.2em;
         }
 
-        /* Table Link Styling */
         a {
             color: #66ccff;
             text-decoration: none;
@@ -132,7 +127,6 @@
             color: #ffcc00;
         }
 
-        /* Filter Input Styling */
         #filterInput {
             padding: 12px;
             width: 90%;
@@ -150,7 +144,6 @@
             box-shadow: 0 0 5px rgba(102, 204, 255, 0.5);
         }
 
-        /* Buttons Styling */
         button {
             padding: 12px;
             background-color: #66ccff;
@@ -170,7 +163,6 @@
             box-shadow: 0 0 5px rgba(102, 204, 255, 0.5);
         }
 
-        /* Category Tags */
         #categoryTags {
             display: flex;
             flex-wrap: wrap;
@@ -191,7 +183,6 @@
             background-color: #66ccff;
         }
 
-        /* Responsive Design */
         @media (max-width: 768px) {
             table {
                 display: block;
@@ -237,13 +228,33 @@
     <div id="noResults">No results found.</div>
 
     <script>
-        // Hardcoded URL data (insert your original urlData here)
-        const urlData = [/* Your original urlData array */];
+        // Sample URL data for testing (replace with your full urlData)
+        const urlData = [
+            {
+                "platform": "M365",
+                "url": "https://github.com/iandday/o365AuditParser",
+                "description": "Process M365 Audit Logs into a useable form.",
+                "title": "M365 UAL Parser"
+            },
+            {
+                "platform": "iOS",
+                "url": "https://github.com/prosch88/UFADE",
+                "description": "Universal Forensic Apple Device Extractor.",
+                "title": "UFADE"
+            },
+            {
+                "platform": "Windows",
+                "url": "https://github.com/dwmetz/CyberPipe",
+                "description": "An easy to use PowerShell script to collect memory and disk forensics for DFIR investigations.",
+                "title": "CyberPipe"
+            }
+            // Add your full urlData here
+        ];
 
         let filteredData = [...urlData];
         let activeTag = null;
 
-        // Populate table (no pagination)
+        // Populate table
         function populateTable(data) {
             const tableBody = document.querySelector('#linksTable tbody');
             const noResults = document.getElementById('noResults');
@@ -422,12 +433,13 @@
             link.click();
         }
 
-        // Initial setup
-        urlData.sort((a, b) => a.platform.localeCompare(b.platform));
-        document.querySelector('th').classList.add('asc');
+        // Initial setup: populate table with full data and tags
+        populateTable(urlData); // Show all data immediately
+        populateTags();         // Populate tags
+        urlData.sort((a, b) => a.platform.localeCompare(b.platform)); // Sort by platform
+        document.querySelector('th').classList.add('asc');            // Set initial sort indicator
         document.querySelector('th i').className = 'fas fa-sort-up';
-        populateTable(urlData);
-        populateTags();
+        populateTable(urlData); // Re-populate with sorted data
     </script>
 </body>
 </html>
