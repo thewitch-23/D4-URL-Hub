@@ -120,13 +120,19 @@
             cursor: pointer;
             padding: 0;
             margin: 0 0 0 4px;
-            width: 12px;
-            height: 12px;
+            width: 10px;           /* Explicitly small width */
+            height: 10px;          /* Explicitly small height */
+            min-width: 0;          /* Override browser defaults */
+            min-height: 0;         /* Override browser defaults */
             display: inline-block;
-            line-height: 12px;
+            line-height: 10px;
             vertical-align: middle;
             transition: color 0.3s ease, transform 0.2s ease;
             overflow: hidden;
+            appearance: none;      /* Remove default button styling */
+            -webkit-appearance: none; /* For Safari/Chrome */
+            -moz-appearance: none;    /* For Firefox */
+            box-sizing: border-box;   /* Ensure padding fits within size */
         }
 
         .copy-btn:hover {
@@ -135,7 +141,7 @@
         }
 
         .copy-btn i {
-            font-size: 10px;
+            font-size: 8px;        /* Even smaller icon */
             vertical-align: top;
         }
 
