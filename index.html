@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
     <title>D4 URL Hub</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         body {
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Open Sans', sans-serif; /* Secondary font for body text */
             background: linear-gradient(135deg, #333333, #1a1a1a);
             color: #f5f5f5;
             margin: 0;
@@ -18,10 +18,11 @@
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
-            transition: background 0.3s ease, color 0.3s ease; /* Smooth theme transition */
+            transition: background 0.3s ease, color 0.3s ease;
         }
 
         h1 {
+            font-family: 'Roboto', sans-serif; /* Primary font for headings */
             text-align: center;
             margin-top: 20px;
             font-size: 3em;
@@ -34,6 +35,7 @@
             color: #f5f5f5;
             margin: 10px 0;
             font-weight: 400;
+            line-height: 1.5; /* Increased for readability */
         }
 
         .controls {
@@ -42,14 +44,14 @@
             gap: 10px;
             justify-content: center;
             margin-bottom: 20px;
-            position: sticky; /* Sticky controls */
+            position: sticky;
             top: 20px;
             z-index: 2;
-            background: #333333; /* Match dark mode background */
+            background: #333333;
             padding: 10px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            transition: background 0.3s ease; /* Smooth theme transition */
+            transition: background 0.3s ease, box-shadow 0.3s ease;
         }
 
         table {
@@ -63,7 +65,7 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             opacity: 0;
             animation: fadeIn 0.5s ease forwards;
-            transition: background-color 0.3s ease; /* Smooth theme transition */
+            transition: background-color 0.3s ease;
         }
 
         @keyframes fadeIn {
@@ -84,6 +86,7 @@
             top: 0;
             z-index: 1;
             transition: background-color 0.3s ease, color 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Distinguish headers */
         }
 
         th:hover {
@@ -97,6 +100,7 @@
         td {
             color: #f5f5f5;
             transition: color 0.3s ease;
+            line-height: 1.5; /* Increased for readability */
         }
 
         tr:nth-child(even) {
@@ -116,10 +120,12 @@
             cursor: pointer;
             font-size: 1em;
             padding: 0 5px;
+            transition: color 0.3s ease, transform 0.2s ease; /* Added transform */
         }
 
         .copy-btn:hover {
             color: #ffcc00;
+            transform: scale(1.1); /* Subtle hover animation */
         }
 
         #noResults {
@@ -160,6 +166,7 @@
 
         button {
             padding: 12px;
+            min-width: 120px; /* Consistent sizing */
             background-color: #66ccff;
             border: none;
             border-radius: 5px;
@@ -167,15 +174,22 @@
             cursor: pointer;
             font-size: 1.1em;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
         }
 
         button:hover {
             background-color: #ffcc00;
+            transform: scale(1.05); /* Subtle hover animation */
+        }
+
+        button:active {
+            background-color: #e6b800; /* Touch feedback */
+            transform: scale(0.98);
         }
 
         button:focus {
             box-shadow: 0 0 5px rgba(102, 204, 255, 0.5);
+            outline: 2px solid #66ccff; /* Visible focus indicator */
         }
 
         #categoryTags {
@@ -183,7 +197,7 @@
             flex-wrap: wrap;
             gap: 10px;
             margin-top: 20px;
-            justify-content: center; /* Center the tags horizontally */
+            justify-content: center;
         }
 
         .tag {
@@ -192,21 +206,27 @@
             border-radius: 15px;
             cursor: pointer;
             font-size: 0.9em;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
         .tag:hover, .tag.active {
             background-color: #66ccff;
+            transform: scale(1.05); /* Subtle hover animation */
+        }
+
+        .tag:focus {
+            outline: 2px solid #66ccff; /* Visible focus indicator */
         }
 
         /* Light Mode Styles */
         body.light-mode {
             background: linear-gradient(135deg, #f5f5f5, #e0e0e0);
-            color: #333;
+            color: #222; /* Darker for better contrast */
         }
 
         .light-mode .controls {
             background: #e0e0e0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .light-mode table {
@@ -215,7 +235,7 @@
 
         .light-mode thead th {
             background-color: #ddd;
-            color: #333;
+            color: #222;
         }
 
         .light-mode tr:nth-child(even) {
@@ -227,12 +247,12 @@
         }
 
         .light-mode td {
-            color: #333;
+            color: #222;
         }
 
         .light-mode #filterInput {
             background-color: #fff;
-            color: #333;
+            color: #222;
             border: 1px solid #ccc;
         }
 
@@ -245,7 +265,7 @@
         }
 
         .light-mode h1, .light-mode p {
-            color: #333;
+            color: #222;
         }
 
         @media (max-width: 768px) {
@@ -253,6 +273,34 @@
                 display: block;
                 overflow-x: auto;
                 white-space: nowrap;
+            }
+            /* Card layout for very small screens */
+            @media (max-width: 480px) {
+                table, thead, tbody, th, td, tr {
+                    display: block;
+                }
+                thead {
+                    display: none; /* Hide headers on tiny screens */
+                }
+                tr {
+                    margin-bottom: 15px;
+                    background-color: #4a4a4a;
+                    border-radius: 8px;
+                    padding: 10px;
+                }
+                td {
+                    font-size: 1.1em; /* Larger text */
+                    border: none;
+                    position: relative;
+                    padding-left: 50%;
+                }
+                td:before {
+                    content: attr(data-label);
+                    position: absolute;
+                    left: 10px;
+                    font-weight: bold;
+                    color: #66ccff;
+                }
             }
             h1 {
                 font-size: 2em;
@@ -265,14 +313,20 @@
                 width: 100%;
                 max-width: none;
             }
+            .tag:active {
+                background-color: #55bbff; /* Touch feedback */
+            }
+            button:active {
+                background-color: #e6b800; /* Touch feedback */
+            }
         }
     </style>
 </head>
 <body>
     <h1>D4 URL Hub</h1>
-    <p>Filter by platform, title, or description:</p>
+    <p id="filterDescription">Filter by platform, title, or description:</p>
     <div class="controls">
-        <input type="text" id="filterInput" onkeyup="debounceFilter()" placeholder="Search by platform, title, or description..." aria-label="Filter table by platform, title, or description">
+        <input type="text" id="filterInput" onkeyup="debounceFilter()" placeholder="Search by platform, title, or description..." aria-label="Filter table by platform, title, or description" aria-describedby="filterDescription">
         <button id="clearButton" onclick="clearFilter()" aria-label="Clear filter"><i class="fas fa-times"></i> Clear</button>
         <button id="exportButton" onclick="exportToCSV()" aria-label="Export table to CSV"><i class="fas fa-download"></i> Export CSV</button>
         <button id="themeToggle" onclick="toggleTheme()" aria-label="Toggle dark/light mode"><i class="fas fa-adjust"></i> Toggle Theme</button>
@@ -294,7 +348,6 @@
     <div id="noResults">No results found.</div>
 
     <script>
-        // Full URL data (your original chart data)
         const urlData = [
             {
                 "platform": "M365",
@@ -939,11 +992,9 @@
                 "title": "HexEdit" 
             }
         ];
-
         let filteredData = [...urlData];
         let activeTag = null;
 
-        // Populate table
         function populateTable(data) {
             const tableBody = document.querySelector('#linksTable tbody');
             const noResults = document.getElementById('noResults');
@@ -953,7 +1004,7 @@
             }
             tableBody.innerHTML = '';
 
-            if (!data || data.length === 0) {
+            if (!Array.isArray(data) || data.length === 0) {
                 noResults.style.display = 'block';
                 return;
             }
@@ -965,6 +1016,7 @@
 
                     const platformCell = document.createElement('td');
                     platformCell.textContent = link.platform;
+                    platformCell.setAttribute('data-label', 'Platform');
 
                     const urlCell = document.createElement('td');
                     const linkElement = document.createElement('a');
@@ -978,9 +1030,11 @@
                     copyButton.onclick = () => copyToClipboard(link.url);
                     copyButton.setAttribute('aria-label', `Copy URL for ${link.title}`);
                     urlCell.appendChild(copyButton);
+                    urlCell.setAttribute('data-label', 'URL');
 
                     const descriptionCell = document.createElement('td');
                     descriptionCell.textContent = link.description;
+                    descriptionCell.setAttribute('data-label', 'Description');
 
                     row.appendChild(platformCell);
                     row.appendChild(urlCell);
@@ -995,45 +1049,34 @@
             }
         }
 
-        // Populate category tags with split platforms
         function populateTags() {
             const tagsContainer = document.getElementById('categoryTags');
-            // Split platforms and collect unique values
             const allPlatforms = urlData.flatMap(item => item.platform.split(', ').map(p => p.trim()));
-            const uniquePlatforms = [...new Set(allPlatforms)];
-            uniquePlatforms.sort(); // Sort alphabetically for consistency
+            const uniquePlatforms = [...new Set(allPlatforms)].sort();
 
             uniquePlatforms.forEach(platform => {
                 const tag = document.createElement('div');
                 tag.className = 'tag';
                 tag.textContent = platform;
-                tag.onclick = () => filterByTag(platform);
+                tag.onclick = filterByTag;
                 tag.setAttribute('role', 'button');
                 tag.setAttribute('tabindex', '0');
-                tag.onkeydown = (e) => { if (e.key === 'Enter') filterByTag(platform); };
+                tag.onkeydown = (e) => { if (e.key === 'Enter') filterByTag(e); };
                 tagsContainer.appendChild(tag);
             });
         }
 
-        // Filter by tag (match any part of the platform string)
-        function filterByTag(platform) {
-            const tags = document.querySelectorAll('.tag');
-            tags.forEach(tag => tag.classList.remove('active'));
-            const activeTagElement = Array.from(tags).find(tag => tag.textContent === platform);
-
-            if (activeTag === platform) {
-                activeTag = null;
-                filteredData = [...urlData];
-            } else {
-                activeTag = platform;
-                activeTagElement.classList.add('active');
-                filteredData = urlData.filter(item => item.platform.includes(platform));
-            }
+        function filterByTag(event) {
+            const tag = event.target;
+            const platform = tag.textContent;
+            const isActive = tag.classList.toggle('active');
+            document.querySelectorAll('.tag').forEach(t => t !== tag && t.classList.remove('active'));
+            activeTag = isActive ? platform : null;
+            filteredData = isActive ? urlData.filter(item => item.platform.includes(platform)) : [...urlData];
             document.getElementById('filterInput').value = '';
             populateTable(filteredData);
         }
 
-        // Debounce function
         function debounce(func, wait) {
             let timeout;
             return function executedFunction(...args) {
@@ -1046,7 +1089,6 @@
             };
         }
 
-        // Filter table
         function filterTable() {
             const input = document.getElementById('filterInput');
             const filter = input.value.toUpperCase();
@@ -1062,10 +1104,8 @@
             populateTable(filteredData);
         }
 
-        // Debounced filter
         const debounceFilter = debounce(filterTable, 300);
 
-        // Clear filter
         function clearFilter() {
             const input = document.getElementById('filterInput');
             input.value = '';
@@ -1075,20 +1115,20 @@
             populateTable(filteredData);
         }
 
-        // Sort table
         function sortTable(columnIndex) {
             const table = document.getElementById('linksTable');
             const headers = table.querySelectorAll('th');
-            const th = headers[columnIndex];
-            let dir = th.classList.contains('asc') ? 'desc' : 'asc';
+            const headerCell = headers[columnIndex];
+            let dir = headerCell.classList.contains('asc') ? 'desc' : 'asc';
 
-            headers.forEach(header => {
-                header.classList.remove('asc', 'desc');
-                header.querySelector('i').className = 'fas fa-sort';
+            headers.forEach(h => {
+                h.classList.remove('asc', 'desc');
+                h.querySelector('i').className = 'fas fa-sort';
             });
-            th.classList.add(dir);
-            th.querySelector('i').className = `fas fa-sort-${dir === 'asc' ? 'up' : 'down'}`;
-            th.setAttribute('aria-sort', dir);
+            headerCell.classList.add(dir);
+            headerCell.querySelector('i').className = `fas fa-sort-${dir === 'asc' ? 'up' : 'down'}`;
+            headerCell.setAttribute('aria-sort', dir);
+            headerCell.setAttribute('aria-label', `Sorted ${dir}ending by ${headerCell.textContent.split(' ')[0]}`);
 
             const sortKey = ['platform', 'title', 'description'][columnIndex];
             filteredData.sort((a, b) => {
@@ -1100,7 +1140,6 @@
             populateTable(filteredData);
         }
 
-        // Copy to clipboard
         function copyToClipboard(text) {
             navigator.clipboard.writeText(text).then(() => {
                 alert('URL copied to clipboard!');
@@ -1110,14 +1149,17 @@
             });
         }
 
-        // Export to CSV
+        function escapeCSV(str) {
+            return `"${str.replace(/"/g, '""').replace(/\n/g, ' ')}"`;
+        }
+
         function exportToCSV() {
             const headers = ['Platform', 'Title', 'URL', 'Description'];
             const rows = filteredData.map(item => [
-                `"${item.platform}"`,
-                `"${item.title}"`,
-                `"${item.url}"`,
-                `"${item.description.replace(/"/g, '""')}"`
+                escapeCSV(item.platform),
+                escapeCSV(item.title),
+                escapeCSV(item.url),
+                escapeCSV(item.description)
             ]);
             const csvContent = [headers, ...rows].map(row => row.join(',')).join('\n');
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -1127,28 +1169,22 @@
             link.click();
         }
 
-        // Toggle Dark/Light Mode
         function toggleTheme() {
             const body = document.body;
             body.classList.toggle('light-mode');
             localStorage.setItem('theme', body.classList.contains('light-mode') ? 'light' : 'dark');
         }
 
-        // Apply saved theme on load
         window.onload = function() {
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'light') {
-                document.body.classList.add('light-mode');
-            }
+            const savedTheme = localStorage.getItem('theme') || 
+                (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+            if (savedTheme === 'light') document.body.classList.add('light-mode');
+            urlData.sort((a, b) => a.platform.localeCompare(b.platform));
+            document.querySelector('th').classList.add('asc');
+            document.querySelector('th i').className = 'fas fa-sort-up';
+            populateTable(urlData);
+            populateTags();
         };
-
-        // Initial setup: populate table with full data and tags
-        populateTable(urlData); // Show all data immediately
-        populateTags();         // Populate tags with split platforms
-        urlData.sort((a, b) => a.platform.localeCompare(b.platform)); // Sort by platform
-        document.querySelector('th').classList.add('asc');            // Set initial sort indicator
-        document.querySelector('th i').className = 'fas fa-sort-up';
-        populateTable(urlData); // Re-populate with sorted data
     </script>
 </body>
 </html>
