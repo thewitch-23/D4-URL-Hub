@@ -114,23 +114,30 @@
         }
 
         .copy-btn {
-        background: none;
-        border: none;
-        color: #66ccff;
-        cursor: pointer;
-        font-size: 0.8em;
-        padding: 0;
-        margin-left: 5px;
-        transition: color 0.3s ease, transform 0.2s ease;
-        vertical-align: middle;
-        width: auto;
-        display: inline;
-    }
+            background: none;
+            border: none;
+            color: #66ccff;
+            cursor: pointer;
+            padding: 0;
+            margin: 0 0 0 4px;
+            width: 12px;
+            height: 12px;
+            display: inline-block;
+            line-height: 12px;
+            vertical-align: middle;
+            transition: color 0.3s ease, transform 0.2s ease;
+            overflow: hidden;
+        }
 
-    .copy-btn:hover {
-        color: #ffcc00;
-        transform: scale(1.05);
-    }
+        .copy-btn:hover {
+            color: #ffcc00;
+            transform: scale(1.1);
+        }
+
+        .copy-btn i {
+            font-size: 10px;
+            vertical-align: top;
+        }
 
         #noResults {
             display: none;
@@ -995,6 +1002,7 @@
                 "title": "HexEdit" 
             }
         ];
+
         let filteredData = [...urlData];
         let activeTag = null;
 
@@ -1029,7 +1037,7 @@
                     urlCell.appendChild(linkElement);
                     const copyButton = document.createElement('button');
                     copyButton.className = 'copy-btn';
-                    copyButton.innerHTML = '<i class="fas fa-copy"></i>';
+                    copyButton.innerHTML = '<i class="fas fa-copy fa-xs"></i>';
                     copyButton.onclick = () => copyToClipboard(link.url);
                     copyButton.setAttribute('aria-label', `Copy URL for ${link.title}`);
                     urlCell.appendChild(copyButton);
@@ -1180,7 +1188,7 @@
 
         window.onload = function() {
             const savedTheme = localStorage.getItem('theme') || 
-                (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+                (window.matchMedia('(prefers-color-system: light)').matches ? 'light' : 'dark');
             if (savedTheme === 'light') document.body.classList.add('light-mode');
             urlData.sort((a, b) => a.platform.localeCompare(b.platform));
             document.querySelector('th').classList.add('asc');
