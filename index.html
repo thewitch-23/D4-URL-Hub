@@ -3,11 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta name="description" content="D4 URL Hub - A curated directory of DFIR tools and resources organized by platform.">
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
     <title>D4 URL Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
+        /* Toast notification */
+        #toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 0.95em;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            z-index: 9999;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        #toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        #toast.success { background-color: #2a7a2a; }
+        #toast.error   { background-color: #7a2a2a; }
+
         body {
             font-family: 'Open Sans', sans-serif;
             background: linear-gradient(135deg, #333333, #1a1a1a);
@@ -38,20 +63,60 @@
             line-height: 1.5;
         }
 
+        /* Keyboard shortcut hint */
+        #searchHint {
+            font-size: 0.85em;
+            color: #aaa;
+            margin-top: 4px;
+            margin-bottom: 0;
+        }
+        .light-mode #searchHint {
+            color: #666;
+        }
+        kbd {
+            display: inline-block;
+            padding: 1px 5px;
+            border: 1px solid #888;
+            border-radius: 3px;
+            font-size: 0.85em;
+            font-family: monospace;
+            background-color: rgba(255,255,255,0.1);
+            color: #ddd;
+        }
+        .light-mode kbd {
+            background-color: rgba(0,0,0,0.07);
+            border-color: #bbb;
+            color: #444;
+        }
+
         .controls {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
             justify-content: center;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             position: sticky;
             top: 20px;
             z-index: 2;
-            background: #333333;
+            background: rgba(51, 51, 51, 0.75);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             padding: 10px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
             transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* Result count */
+        #resultCount {
+            width: 100%;
+            text-align: center;
+            font-size: 0.85em;
+            color: #aaa;
+            margin: 0 0 8px 0;
+        }
+        .light-mode #resultCount {
+            color: #666;
         }
 
         table {
@@ -120,19 +185,19 @@
             cursor: pointer;
             padding: 0;
             margin: 0 0 0 4px;
-            width: 9px;           /* Explicitly small width */
-            height: 10px;          /* Explicitly small height */
-            min-width: 0;          /* Override browser defaults */
-            min-height: 0;         /* Override browser defaults */
+            width: 9px;
+            height: 10px;
+            min-width: 0;
+            min-height: 0;
             display: inline-block;
             line-height: 10px;
             vertical-align: middle;
             transition: color 0.3s ease, transform 0.2s ease;
             overflow: hidden;
-            appearance: none;      /* Remove default button styling */
-            -webkit-appearance: none; /* For Safari/Chrome */
-            -moz-appearance: none;    /* For Firefox */
-            box-sizing: border-box;   /* Ensure padding fits within size */
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            box-sizing: border-box;
         }
 
         .copy-btn:hover {
@@ -141,7 +206,7 @@
         }
 
         .copy-btn i {
-            font-size: 12px;        /* Even smaller icon */
+            font-size: 12px;
             vertical-align: top;
         }
 
@@ -224,15 +289,18 @@
             cursor: pointer;
             font-size: 0.9em;
             transition: background-color 0.3s ease, transform 0.2s ease;
+            color: #f5f5f5;
         }
 
         .tag:hover, .tag.active {
             background-color: #66ccff;
+            color: #1a1a1a;
             transform: scale(1.05);
         }
 
         .tag:focus {
             outline: 2px solid #66ccff;
+            outline-offset: 2px;
         }
 
         /* Light Mode Styles */
@@ -242,7 +310,9 @@
         }
 
         .light-mode .controls {
-            background: #e0e0e0;
+            background: rgba(224, 224, 224, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
@@ -275,15 +345,19 @@
 
         .light-mode .tag {
             background-color: #ddd;
+            color: #222;
         }
 
         .light-mode .tag:hover, .light-mode .tag.active {
-            background-color: #66ccff;
+            background-color: #0099cc;
+            color: #fff;
         }
 
         .light-mode h1, .light-mode p {
             color: #222;
         }
+
+        .light-mode #toast { color: #fff; }
 
         @media (max-width: 768px) {
             table {
@@ -339,29 +413,66 @@
     </style>
 </head>
 <body>
+    <!-- Toast notification element -->
+    <div id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
     <h1>D4 URL Hub</h1>
     <p id="filterDescription">Filter by platform, title, or description:</p>
-    <div class="controls">
-        <input type="text" id="filterInput" onkeyup="debounceFilter()" placeholder="Search by platform, title, or description..." aria-label="Filter table by platform, title, or description" aria-describedby="filterDescription">
-        <button id="clearButton" onclick="clearFilter()" aria-label="Clear filter"><i class="fas fa-times"></i> Clear</button>
-        <button id="exportButton" onclick="exportToCSV()" aria-label="Export table to CSV"><i class="fas fa-download"></i> Export CSV</button>
-        <button id="themeToggle" onclick="toggleTheme()" aria-label="Toggle dark/light mode"><i class="fas fa-adjust"></i> Toggle Theme</button>
+    <p id="searchHint">Press <kbd>Ctrl</kbd>+<kbd>F</kbd> or <kbd>/</kbd> to focus search</p>
+    <div class="controls" role="search">
+        <input
+            type="text"
+            id="filterInput"
+            onkeyup="debounceFilter()"
+            placeholder="Search by platform, title, or description..."
+            aria-label="Filter table by platform, title, or description"
+            aria-describedby="filterDescription resultCount"
+            autocomplete="off"
+        >
+        <button id="clearButton" onclick="clearFilter()" aria-label="Clear search filter"><i class="fas fa-times"></i> Clear</button>
+        <button id="exportButton" onclick="exportToCSV()" aria-label="Export current results to CSV"><i class="fas fa-download"></i> Export CSV</button>
+        <button id="themeToggle" onclick="toggleTheme()" aria-label="Toggle dark and light mode"><i class="fas fa-adjust"></i> Toggle Theme</button>
+        <p id="resultCount" aria-live="polite" aria-atomic="true"></p>
     </div>
-    <div id="categoryTags"></div>
+    <div id="categoryTags" role="list" aria-label="Filter by platform category"></div>
 
-    <table id="linksTable" role="grid">
+    <table id="linksTable" role="grid" aria-label="DFIR tools and resources">
         <thead>
             <tr>
-                <th onclick="sortTable(0)" aria-sort="ascending" tabindex="0" role="columnheader">Platform <i class="fas fa-sort-up"></i></th>
-                <th onclick="sortTable(1)" aria-sort="none" tabindex="0" role="columnheader">URL <i class="fas fa-sort"></i></th>
-                <th onclick="sortTable(2)" aria-sort="none" tabindex="0" role="columnheader">Description <i class="fas fa-sort"></i></th>
+                <th
+                    onclick="sortTable(0)"
+                    aria-sort="ascending"
+                    tabindex="0"
+                    role="columnheader"
+                    onkeydown="if(event.key==='Enter'||event.key===' ')sortTable(0)"
+                    aria-label="Sort by Platform, currently ascending">
+                    Platform <i class="fas fa-sort-up" aria-hidden="true"></i>
+                </th>
+                <th
+                    onclick="sortTable(1)"
+                    aria-sort="none"
+                    tabindex="0"
+                    role="columnheader"
+                    onkeydown="if(event.key==='Enter'||event.key===' ')sortTable(1)"
+                    aria-label="Sort by URL/Title, not sorted">
+                    URL <i class="fas fa-sort" aria-hidden="true"></i>
+                </th>
+                <th
+                    onclick="sortTable(2)"
+                    aria-sort="none"
+                    tabindex="0"
+                    role="columnheader"
+                    onkeydown="if(event.key==='Enter'||event.key===' ')sortTable(2)"
+                    aria-label="Sort by Description, not sorted">
+                    Description <i class="fas fa-sort" aria-hidden="true"></i>
+                </th>
             </tr>
         </thead>
         <tbody>
             <!-- Table rows will be inserted dynamically by JavaScript -->
         </tbody>
     </table>
-    <div id="noResults">No results found.</div>
+    <div id="noResults" role="status" aria-live="polite">No results found.</div>
 
     <script>
         const urlData = [
@@ -398,7 +509,7 @@
             {
                 "platform": "Outlook",
                 "url": "https://github.com/iluvadev/XstReader",
-                "description": "XstReader is an open source viewer for Microsoft Outlook’s .ost and .pst files. View and inspect all content and export messages and attachments.",
+                "description": "XstReader is an open source viewer for Microsoft Outlook's .ost and .pst files. View and inspect all content and export messages and attachments.",
                 "title": "XstReader"
             },
             {
@@ -908,7 +1019,7 @@
             { 
                 "platform": "Windows", 
                 "url": "https://github.com/WithSecureLabs/chainsaw", 
-                "description": "Chainsaw provides a powerful ‘first-response’ capability to quickly identify threats within Windows forensic artefacts such as Event Logs and the MFT file. Chainsaw offers a generic and fast method of searching through event logs for keywords, and by identifying threats using built-in support for Sigma detection rules, and via custom Chainsaw detection rules.", 
+                "description": "Chainsaw provides a powerful 'first-response' capability to quickly identify threats within Windows forensic artefacts such as Event Logs and the MFT file. Chainsaw offers a generic and fast method of searching through event logs for keywords, and by identifying threats using built-in support for Sigma detection rules, and via custom Chainsaw detection rules.", 
                 "title": "Chainsaw" 
             },
             { 
@@ -1166,7 +1277,7 @@
             { 
                 "platform": "Windows", 
                 "url": "https://www.magnetforensics.com/resources/magnet-ram-capture/", 
-                "description": "Magnet RAM Capture is a free imaging tool designed to capture the physical memory of a suspect’s computer, allowing investigators to recover and analyze valuable artifacts that are often only found in memory.", 
+                "description": "Magnet RAM Capture is a free imaging tool designed to capture the physical memory of a suspect's computer, allowing investigators to recover and analyze valuable artifacts that are often only found in memory.", 
                 "title": "Magnet-ram-capture" 
             },
             { 
@@ -1274,7 +1385,7 @@
             { 
                 "platform": "Windows", 
                 "url": "https://github.com/keydet89/RegRipper4.0", 
-                "description": "Regripper’s CLI tool can be used to surgically extract, translate, and display information (both data and metadata) from Registry-formatted files via plugins in the form of Perl-scripts. It allows the analyst to select a hive-file to parse and a plugin or a profile, which is a list of plugins to run against the given hive. The results go to STDOUT and can be redirected to a file, that the analyst designates.", 
+                "description": "Regripper's CLI tool can be used to surgically extract, translate, and display information (both data and metadata) from Registry-formatted files via plugins in the form of Perl-scripts. It allows the analyst to select a hive-file to parse and a plugin or a profile, which is a list of plugins to run against the given hive. The results go to STDOUT and can be redirected to a file, that the analyst designates.", 
                 "title": "RegRipper4.0" 
             },
             { 
@@ -1286,7 +1397,7 @@
             { 
                 "platform": "Windows", 
                 "url": "https://github.com/ArsenalRecon/BackstageParser", 
-                "description": "Arsenal's Backstage Parser is a Python tool that can be used to parse the contents of Microsoft Office files found in the “\Users(User)\AppData\Local\Microsoft\Office\16.0\BackstageinAppNavCache” path.", 
+                "description": "Arsenal's Backstage Parser is a Python tool that can be used to parse the contents of Microsoft Office files found in the \"\\Users(User)\\AppData\\Local\\Microsoft\\Office\\16.0\\BackstageinAppNavCache\" path.", 
                 "title": "Microsoft Office Backstage Parser" 
             },
             { 
@@ -1342,14 +1453,34 @@
         let filteredData = [...urlData];
         let activeTag = null;
 
+        // ── Toast ────────────────────────────────────────────────────────────
+        let toastTimer = null;
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `show ${type}`;
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                toast.className = '';
+            }, 2500);
+        }
+
+        // ── Result count ─────────────────────────────────────────────────────
+        function updateResultCount(shown, total) {
+            const el = document.getElementById('resultCount');
+            el.textContent = shown === total
+                ? `Showing all ${total} tools`
+                : `Showing ${shown} of ${total} tools`;
+        }
+
+        // ── Table population ─────────────────────────────────────────────────
         function populateTable(data) {
             const tableBody = document.querySelector('#linksTable tbody');
             const noResults = document.getElementById('noResults');
-            if (!tableBody) {
-                console.error("Table body not found!");
-                return;
-            }
+            if (!tableBody) { console.error("Table body not found!"); return; }
             tableBody.innerHTML = '';
+
+            updateResultCount(data.length, urlData.length);
 
             if (!Array.isArray(data) || data.length === 0) {
                 noResults.style.display = 'block';
@@ -1370,11 +1501,13 @@
                     linkElement.href = link.url;
                     linkElement.textContent = link.title;
                     linkElement.target = '_blank';
+                    linkElement.rel = 'noopener noreferrer';
                     urlCell.appendChild(linkElement);
+
                     const copyButton = document.createElement('button');
                     copyButton.className = 'copy-btn';
-                    copyButton.innerHTML = '<i class="fas fa-copy fa-xs"></i>';
-                    copyButton.onclick = () => copyToClipboard(link.url);
+                    copyButton.innerHTML = '<i class="fas fa-copy fa-xs" aria-hidden="true"></i>';
+                    copyButton.onclick = () => copyToClipboard(link.url, link.title);
                     copyButton.setAttribute('aria-label', `Copy URL for ${link.title}`);
                     urlCell.appendChild(copyButton);
                     urlCell.setAttribute('data-label', 'URL');
@@ -1386,7 +1519,6 @@
                     row.appendChild(platformCell);
                     row.appendChild(urlCell);
                     row.appendChild(descriptionCell);
-
                     tableBody.appendChild(row);
                 });
             } catch (error) {
@@ -1396,6 +1528,7 @@
             }
         }
 
+        // ── Tags ─────────────────────────────────────────────────────────────
         function populateTags() {
             const tagsContainer = document.getElementById('categoryTags');
             const allPlatforms = urlData.flatMap(item => item.platform.split(', ').map(p => p.trim()));
@@ -1405,32 +1538,38 @@
                 const tag = document.createElement('div');
                 tag.className = 'tag';
                 tag.textContent = platform;
-                tag.onclick = filterByTag;
-                tag.setAttribute('role', 'button');
+                tag.setAttribute('role', 'listitem');
                 tag.setAttribute('tabindex', '0');
-                tag.onkeydown = (e) => { if (e.key === 'Enter') filterByTag(e); };
+                tag.setAttribute('aria-pressed', 'false');
+                tag.setAttribute('aria-label', `Filter by ${platform}`);
+                tag.onclick = filterByTag;
+                tag.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); filterByTag(e); } };
                 tagsContainer.appendChild(tag);
             });
         }
 
         function filterByTag(event) {
-            const tag = event.target;
+            const tag = event.currentTarget;
             const platform = tag.textContent;
             const isActive = tag.classList.toggle('active');
-            document.querySelectorAll('.tag').forEach(t => t !== tag && t.classList.remove('active'));
+            tag.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+            document.querySelectorAll('.tag').forEach(t => {
+                if (t !== tag) {
+                    t.classList.remove('active');
+                    t.setAttribute('aria-pressed', 'false');
+                }
+            });
             activeTag = isActive ? platform : null;
             filteredData = isActive ? urlData.filter(item => item.platform.includes(platform)) : [...urlData];
             document.getElementById('filterInput').value = '';
             populateTable(filteredData);
         }
 
+        // ── Search / filter ───────────────────────────────────────────────────
         function debounce(func, wait) {
             let timeout;
             return function executedFunction(...args) {
-                const later = () => {
-                    clearTimeout(timeout);
-                    func(...args);
-                };
+                const later = () => { clearTimeout(timeout); func(...args); };
                 clearTimeout(timeout);
                 timeout = setTimeout(later, wait);
             };
@@ -1439,15 +1578,16 @@
         function filterTable() {
             const input = document.getElementById('filterInput');
             const filter = input.value.toUpperCase();
-            filteredData = urlData.filter(link => {
-                return (
-                    link.platform.toUpperCase().includes(filter) ||
-                    link.title.toUpperCase().includes(filter) ||
-                    link.description.toUpperCase().includes(filter)
-                );
-            });
+            filteredData = urlData.filter(link =>
+                link.platform.toUpperCase().includes(filter) ||
+                link.title.toUpperCase().includes(filter) ||
+                link.description.toUpperCase().includes(filter)
+            );
             activeTag = null;
-            document.querySelectorAll('.tag').forEach(tag => tag.classList.remove('active'));
+            document.querySelectorAll('.tag').forEach(tag => {
+                tag.classList.remove('active');
+                tag.setAttribute('aria-pressed', 'false');
+            });
             populateTable(filteredData);
         }
 
@@ -1458,24 +1598,34 @@
             input.value = '';
             filteredData = [...urlData];
             activeTag = null;
-            document.querySelectorAll('.tag').forEach(tag => tag.classList.remove('active'));
+            document.querySelectorAll('.tag').forEach(tag => {
+                tag.classList.remove('active');
+                tag.setAttribute('aria-pressed', 'false');
+            });
             populateTable(filteredData);
+            input.focus();
         }
 
+        // ── Sort ──────────────────────────────────────────────────────────────
         function sortTable(columnIndex) {
             const table = document.getElementById('linksTable');
             const headers = table.querySelectorAll('th');
             const headerCell = headers[columnIndex];
             let dir = headerCell.classList.contains('asc') ? 'desc' : 'asc';
 
-            headers.forEach(h => {
+            headers.forEach((h, i) => {
                 h.classList.remove('asc', 'desc');
                 h.querySelector('i').className = 'fas fa-sort';
+                h.setAttribute('aria-sort', 'none');
+                const labels = ['Platform', 'URL/Title', 'Description'];
+                h.setAttribute('aria-label', `Sort by ${labels[i]}, not sorted`);
             });
+
             headerCell.classList.add(dir);
             headerCell.querySelector('i').className = `fas fa-sort-${dir === 'asc' ? 'up' : 'down'}`;
-            headerCell.setAttribute('aria-sort', dir);
-            headerCell.setAttribute('aria-label', `Sorted ${dir}ending by ${headerCell.textContent.split(' ')[0]}`);
+            headerCell.setAttribute('aria-sort', dir === 'asc' ? 'ascending' : 'descending');
+            const colLabels = ['Platform', 'URL/Title', 'Description'];
+            headerCell.setAttribute('aria-label', `Sort by ${colLabels[columnIndex]}, currently ${dir === 'asc' ? 'ascending' : 'descending'}`);
 
             const sortKey = ['platform', 'title', 'description'][columnIndex];
             filteredData.sort((a, b) => {
@@ -1487,15 +1637,17 @@
             populateTable(filteredData);
         }
 
-        function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                alert('URL copied to clipboard!');
-            }).catch(err => {
-                console.error('Failed to copy:', err);
-                alert('Failed to copy URL.');
-            });
+        // ── Clipboard ─────────────────────────────────────────────────────────
+        function copyToClipboard(text, title) {
+            navigator.clipboard.writeText(text)
+                .then(() => showToast(`Copied: ${title}`, 'success'))
+                .catch(err => {
+                    console.error('Failed to copy:', err);
+                    showToast('Failed to copy URL.', 'error');
+                });
         }
 
+        // ── CSV export ────────────────────────────────────────────────────────
         function escapeCSV(str) {
             return `"${str.replace(/"/g, '""').replace(/\n/g, ' ')}"`;
         }
@@ -1514,23 +1666,53 @@
             link.href = URL.createObjectURL(blob);
             link.download = 'D4_URL_Hub.csv';
             link.click();
+            showToast(`Exported ${filteredData.length} rows to CSV`, 'success');
         }
 
+        // ── Theme ─────────────────────────────────────────────────────────────
         function toggleTheme() {
             const body = document.body;
             body.classList.toggle('light-mode');
             localStorage.setItem('theme', body.classList.contains('light-mode') ? 'light' : 'dark');
         }
 
+        // ── Keyboard shortcut: / or Ctrl+F focuses search ─────────────────────
+        document.addEventListener('keydown', function(e) {
+            const input = document.getElementById('filterInput');
+            // Press "/" to focus search (when not already in an input)
+            if (e.key === '/' && document.activeElement !== input) {
+                e.preventDefault();
+                input.focus();
+                input.select();
+            }
+            // Ctrl+F or Cmd+F to focus search
+            if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+                e.preventDefault();
+                input.focus();
+                input.select();
+            }
+            // Escape clears and blurs search
+            if (e.key === 'Escape' && document.activeElement === input) {
+                clearFilter();
+                input.blur();
+            }
+        });
+
+        // ── Init ──────────────────────────────────────────────────────────────
         window.onload = function() {
-            const savedTheme = localStorage.getItem('theme') || 
-                (window.matchMedia('(prefers-color-system: light)').matches ? 'light' : 'dark');
+            // Fix: corrected prefers-color-scheme (was prefers-color-system)
+            const savedTheme = localStorage.getItem('theme') ||
+                (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
             if (savedTheme === 'light') document.body.classList.add('light-mode');
+
             urlData.sort((a, b) => a.platform.localeCompare(b.platform));
             document.querySelector('th').classList.add('asc');
             document.querySelector('th i').className = 'fas fa-sort-up';
             populateTable(urlData);
             populateTags();
+
+            // Auto-focus search on load
+            document.getElementById('filterInput').focus();
         };
     </script>
 </body>
